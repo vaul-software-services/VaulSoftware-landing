@@ -1,0 +1,183 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import CTA from "../../components/CTA.astro";
+import Arrow from "../../components/Arrow.astro";
+import CurrencySelector from "../../components/CurrencySelector.astro";
+import LandingGuide from "../../components/LandingGuide.astro";
+import PricingCards from "../../components/PricingCards.astro";
+import PricingComparison from "../../components/PricingComparison.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import {
+  pricingCopy,
+  quotePlans,
+  pricingFeatures,
+  planContactPath,
+} from "../../data/pricing";
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = pricingCopy[lang];
+const messages = { title: t.title, description: t.description };
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">{t.eyebrow}</span>
+        <h1 class="display">{t.heading}</h1>
+        <p class="intro">{t.intro}</p>
+        <p class="pricing-scope-note">{t.launchNote}</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <h2 class="sr-only">{t.nav}</h2>
+        <CurrencySelector lang={lang} />
+        <PricingCards lang={lang} />
+        <p class="pricing-scope-note">{t.scopeNote}</p>
+      </div>
+    </section>
+    <LandingGuide lang={lang} />
+    <section class="section purpose">
+      {quotePlans.map((plan) => (
+        <div class="wrap two-col quote-plan">
+          <div>
+            <span class="eyebrow">{plan.name[lang]}</span>
+            <h2 class="heading">{plan.name[lang]}</h2>
+            <p class="intro mt-6">{plan.description[lang]}</p>
+            <div class="custom-price">
+              <strong>{t.customQuote}</strong>
+              <p>{t.initial}</p>
+              <strong>{t.requirements}</strong>
+              <p>{t.monthly}</p>
+            </div>
+            <a class="btn mt-6" href={planContactPath(lang, plan)}>
+              {plan.cta[lang]}
+              <Arrow />
+            </a>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">{t.customExamples}</h3>
+            <ul class="list">
+              {plan.features.map((id) => (
+                <li>{pricingFeatures[id][lang]}</li>
+              ))}
+            </ul>
+            <p class="pricing-scope-note">{plan.note[lang]}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <h2 class="heading">{t.compare}</h2>
+        <p class="intro mt-5 mb-9">{t.compareIntro}</p>
+        <PricingComparison lang={lang} />
+      </div>
+    </section>
+    <section class="section purpose">
+      <div class="wrap">
+        <h2 class="heading">{t.paymentTitle}</h2>
+        <p class="intro mt-5">{t.paymentIntro}</p>
+        <div class="payment-grid">
+          {t.paymentConditions.map(([heading, body]) => (
+            <article>
+              <h3>{heading}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+        <div class="pricing-separation">
+          <h3 class="heading !text-3xl">{t.separationTitle}</h3>
+          <p class="intro mt-5">{t.separationBody}</p>
+        </div>
+        <div class="pricing-separation">
+          <h3 class="heading !text-3xl">{t.whatsappTitle}</h3>
+          <p class="intro mt-5">{t.whatsappBody}</p>
+        </div>
+      </div>
+    </section>
+    <section class="section bg-white">
+      <div class="wrap">
+        <h2 class="heading text-center">{t.faqTitle}</h2>
+        <div class="faq">
+          {t.faq.map(([question, answer]) => (
+            <details>
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>
+<style>
+  .pricing-scope-note {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 880px;
+    margin-top: 28px;
+  }
+  .quote-plan + .quote-plan {
+    margin-top: 70px;
+    padding-top: 70px;
+    border-top: 1px solid var(--line);
+  }
+  .custom-price {
+    margin-top: 28px;
+    display: grid;
+    gap: 7px;
+  }
+  .custom-price strong {
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .custom-price p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 15px;
+  }
+  .payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 60px;
+    margin-top: 48px;
+  }
+  .payment-grid article {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 24px;
+  }
+  .payment-grid h3 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .payment-grid p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-top: 12px;
+  }
+  .pricing-separation {
+    margin-top: 50px;
+    padding-top: 38px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .pricing-separation .intro {
+    max-width: 950px;
+    font-size: 16px;
+  }
+  @media (max-width: 767px) {
+    .payment-grid {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+  }
+</style>

@@ -1,0 +1,660 @@
+---
+import { pricingCopy } from "../data/pricing";
+import { projects, products } from "../data/projects";
+import { type Locale, routes } from "../lib/i18n";
+import { getContent } from "../data/content";
+import Logo from "./Logo.astro";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+const other = lang === "en" ? "es" : "en";
+const current = Astro.url.pathname.replace(/\/$/, "");
+const suffix = current.replace(/^\/(en|es)\/?/, "");
+const known = [
+  ...routes,
+  "services/web-development",
+  "services/business-automation",
+  "services/custom-software",
+  ...projects.map((p) => `work/${p.slug}`),
+  ...products.map((p) => `products/${p.slug}`),
+  "privacy",
+];
+const switchPath =
+  `/${other}/${known.some((route) => route === suffix) ? suffix + "/" : ""}`.replace(
+    /\/+/g,
+    "/",
+  );
+const nav = [
+  ["", t.home],
+  ["services", t.services],
+  ["products", t.products],
+  ["pricing", pricingCopy[lang].nav],
+  ["work", t.work],
+  ["about", t.about],
+];
+---
+
+<header id="site-header">
+  <div class="wrap header-bar">
+    <a
+      class="brand"
+      href={`/${lang}/`}
+      aria-label={`Vaul Software — ${t.home}`}
+    >
+      <Logo />
+    </a>
+    <nav
+      class="desktop-nav"
+      aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}
+    >
+      {nav.map(([path, label]) => (
+        <a
+          href={`/${lang}/${path ? path + "/" : ""}`}
+          aria-current={
+            current === `/${lang}${path ? "/" + path : ""}` ? "page" : undefined
+          }
+          class:list={{
+            active: path
+              ? current.startsWith(`/${lang}/${path}`)
+              : current === `/${lang}`,
+          }}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+    <div class="header-actions">
+      <button
+        id="theme-toggle"
+        class="theme-toggle"
+        type="button"
+        aria-label={
+          lang === "es" ? "Cambiar a modo oscuro" : "Switch to dark mode"
+        }
+        data-dark={
+          lang === "es" ? "Cambiar a modo oscuro" : "Switch to dark mode"
+        }
+        data-light={
+          lang === "es" ? "Cambiar a modo claro" : "Switch to light mode"
+        }
+      >
+        <svg
+          class="theme-moon"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M20.8 13.1A9 9 0 0 1 10.9 3.2 9 9 0 1 0 20.8 13.1Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <svg
+          class="theme-sun"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="4"
+            stroke="currentColor"
+            stroke-width="1.5"
+          />
+          <path
+            d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <a
+        class="language"
+        href={switchPath}
+        lang={other}
+        hreflang={other}
+        aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
+      >
+        {lang.toUpperCase()}
+        <span aria-hidden="true"> / </span>
+        <span class="text-slate">{other.toUpperCase()}</span>
+      </a>
+      <a class="btn header-cta" href={`/${lang}/contact/`}>
+        {t.talk}
+        <span aria-hidden="true">↗</span>
+      </a>
+      <button
+        id="menu-toggle"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label={lang === "es" ? "Abrir menú" : "Open menu"}
+        data-open={lang === "es" ? "Abrir menú" : "Open menu"}
+        data-close={lang === "es" ? "Cerrar menú" : "Close menu"}
+      >
+        <svg
+          class="menu-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            class="line-top"
+            d="M4 7h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            class="line-middle"
+            d="M4 12h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            class="line-bottom"
+            d="M4 17h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <dialog
+    id="mobile-nav"
+    aria-label={lang === "es" ? "Menú de navegación" : "Navigation menu"}
+  >
+    <div class="wrap mobile-dialog-bar">
+      <a href={`/${lang}/`} aria-label={`Vaul Software — ${t.home}`}>
+        <Logo />
+      </a>
+      <button
+        id="menu-close"
+        type="button"
+        aria-label={lang === "es" ? "Cerrar menú" : "Close menu"}
+        autofocus
+      >
+        <svg
+          class="menu-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            class="line-top"
+            d="M4 7h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            class="line-middle"
+            d="M4 12h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <path
+            class="line-bottom"
+            d="M4 17h16"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="wrap mobile-dialog-content">
+      <nav
+        aria-label={lang === "es" ? "Navegación móvil" : "Mobile navigation"}
+      >
+        {nav.map(([path, label]) => (
+          <a
+            href={`/${lang}/${path ? path + "/" : ""}`}
+            aria-current={
+              current === `/${lang}${path ? "/" + path : ""}`
+                ? "page"
+                : undefined
+            }
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+      <a class="btn mobile-contact" href={`/${lang}/contact/`}>
+        {t.talk} <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </dialog>
+</header>
+<style>
+  .theme-toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--muted);
+  }
+  .theme-toggle:hover {
+    background: var(--soft);
+    color: var(--ink);
+  }
+  .theme-toggle svg {
+    position: absolute;
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s ease;
+  }
+  .theme-moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  .theme-sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  :global(.dark) .theme-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+  :global(.dark) .theme-sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  .menu-icon path {
+    transform-box: view-box;
+    transition:
+      transform 0.3s ease,
+      opacity 0.2s ease;
+  }
+  .line-top {
+    transform-origin: 12px 7px;
+  }
+  .line-middle {
+    transform-origin: 12px 12px;
+  }
+  .line-bottom {
+    transform-origin: 12px 17px;
+  }
+  #menu-toggle[aria-expanded="true"] .line-top,
+  #mobile-nav.is-active .line-top {
+    transform: translateY(5px) rotate(45deg);
+  }
+  #menu-toggle[aria-expanded="true"] .line-middle,
+  #mobile-nav.is-active .line-middle {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  #menu-toggle[aria-expanded="true"] .line-bottom,
+  #mobile-nav.is-active .line-bottom {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  header.is-scrolled {
+    background: color-mix(in srgb, var(--page) 65%, transparent);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom-color: var(--line);
+  }
+  header.is-hidden {
+    transform: translateY(-100%);
+  }
+  header.is-hidden:has(:focus-visible) {
+    transform: translateY(0);
+  }
+  .header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 88px;
+  }
+  .desktop-nav {
+    display: flex;
+    gap: 27px;
+    align-items: center;
+  }
+  .desktop-nav a {
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .desktop-nav a:hover,
+  .desktop-nav a.active {
+    color: var(--link);
+  }
+  .desktop-nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #2563eb;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+  .desktop-nav a:hover::after,
+  .desktop-nav a:focus-visible::after,
+  .desktop-nav a.active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .language {
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .header-cta {
+    min-height: 44px;
+    padding: 11px 18px;
+    gap: 18px;
+    font-size: 13px;
+  }
+  #menu-toggle {
+    display: none;
+    padding: 10px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  #mobile-nav {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--ink);
+    background: var(--page);
+    overflow-y: auto;
+  }
+  #mobile-nav[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  #mobile-nav::backdrop {
+    background: transparent;
+  }
+  .mobile-dialog-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 74px;
+    flex-shrink: 0;
+  }
+  #menu-close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--ink);
+  }
+  .mobile-dialog-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-block: 28px 32px;
+  }
+  .mobile-dialog-content nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mobile-dialog-content nav a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    font-size: clamp(28px, 7vw, 38px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+  .mobile-dialog-content nav a:hover,
+  .mobile-dialog-content nav a[aria-current] {
+    color: var(--link);
+  }
+  .mobile-contact {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .mobile-dialog-content nav {
+    margin-bottom: 32px;
+  }
+  .is-scrolled {
+    box-shadow: 0 3px 20px #00000008;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    header {
+      transition: none;
+    }
+  }
+  @media (max-width: 1023px) {
+    .desktop-nav {
+      gap: 17px;
+    }
+    .header-actions {
+      gap: 14px;
+    }
+    .header-bar {
+      gap: 14px;
+    }
+  }
+  @media (max-width: 1023px) {
+    .desktop-nav,
+    .header-cta {
+      display: none;
+    }
+    #menu-toggle {
+      display: block;
+    }
+    .header-bar {
+      min-height: 74px;
+    }
+    .header-actions {
+      gap: 18px;
+    }
+  }
+  @media (min-width: 1024px) {
+    #mobile-nav {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  // Static pages cannot read query strings at build time. Keep enquiry selections
+  // when switching locales by updating the link from the current browser URL.
+  const languageLink = document.querySelector<HTMLAnchorElement>(".language");
+  if (languageLink) {
+    const params = new URLSearchParams(location.search);
+    const target = new URL(languageLink.href, location.href);
+    for (const key of ["plan", "service", "currency"]) {
+      const value = params.get(key);
+      if (value) target.searchParams.set(key, value);
+    }
+    languageLink.href = target.pathname + target.search;
+  }
+
+  const themeToggle =
+    document.querySelector<HTMLButtonElement>("#theme-toggle");
+  const systemTheme = matchMedia("(prefers-color-scheme: dark)");
+  function applyTheme(dark: boolean) {
+    document.documentElement.classList.toggle("dark", dark);
+    document.documentElement.style.colorScheme = dark ? "dark" : "light";
+    themeToggle?.setAttribute(
+      "aria-label",
+      (dark ? themeToggle.dataset.light : themeToggle.dataset.dark) ?? "",
+    );
+  }
+  applyTheme(document.documentElement.classList.contains("dark"));
+  themeToggle?.addEventListener("click", () => {
+    const dark = !document.documentElement.classList.contains("dark");
+    applyTheme(dark);
+    try {
+      localStorage.setItem("theme", dark ? "dark" : "light");
+    } catch {}
+  });
+  systemTheme.addEventListener("change", (event) => {
+    try {
+      if (!localStorage.getItem("theme")) applyTheme(event.matches);
+    } catch {
+      applyTheme(event.matches);
+    }
+  });
+
+  const toggle = document.querySelector<HTMLButtonElement>("#menu-toggle");
+  const panel = document.querySelector<HTMLDialogElement>("#mobile-nav");
+  const header = document.querySelector<HTMLElement>("#site-header");
+  let lastScrollY = Math.max(0, window.scrollY);
+  let bodyOverflow = document.body.style.overflow;
+  let menuAnimation: Animation | undefined;
+  let closing = false;
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  function finishClosingMenu(returnFocus: boolean) {
+    if (!panel) return;
+    closing = false;
+    panel.close();
+    document.body.style.overflow = bodyOverflow;
+    lastScrollY = Math.max(0, window.scrollY);
+    syncScrollState();
+    if (returnFocus) toggle?.focus();
+  }
+
+  function syncScrollState() {
+    if (panel?.open) return;
+    const currentY = Math.max(0, window.scrollY);
+    const atTop = currentY < 10;
+    header?.classList.toggle("is-scrolled", !atTop);
+    if (currentY !== lastScrollY)
+      header?.classList.toggle("is-hidden", !atTop && currentY > lastScrollY);
+    if (
+      atTop ||
+      (header?.contains(document.activeElement) &&
+        document.activeElement?.matches(":focus-visible"))
+    )
+      header?.classList.remove("is-hidden");
+    lastScrollY = currentY;
+  }
+  syncScrollState();
+  header?.addEventListener("focusin", () =>
+    header.classList.remove("is-hidden"),
+  );
+  function setMenu(open: boolean, returnFocus = false) {
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute(
+      "aria-label",
+      (open ? toggle.dataset.close : toggle.dataset.open) ?? "",
+    );
+    header?.classList.remove("is-hidden");
+    if (open && !panel.open) {
+      bodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      header?.classList.add("is-scrolled");
+      closing = false;
+      menuAnimation?.cancel();
+      panel.showModal();
+      menuAnimation = panel.animate(
+        [{ transform: "translateY(-100%)" }, { transform: "translateY(0)" }],
+        {
+          duration: reducedMotion.matches ? 0 : 500,
+          easing: "cubic-bezier(.65,0,.35,1)",
+        },
+      );
+      requestAnimationFrame(() => {
+        if (panel.open && !closing) panel.classList.add("is-active");
+      });
+    } else if (!open && panel.open && !closing) {
+      closing = true;
+      panel.classList.remove("is-active");
+      menuAnimation?.cancel();
+      menuAnimation = panel.animate(
+        [{ transform: "translateY(0)" }, { transform: "translateY(-100%)" }],
+        {
+          duration: reducedMotion.matches ? 0 : 500,
+          easing: "cubic-bezier(.65,0,.35,1)",
+          fill: "forwards",
+        },
+      );
+      menuAnimation.finished
+        .then(() => finishClosingMenu(returnFocus))
+        .catch(() => {});
+    }
+  }
+  toggle?.addEventListener("click", () =>
+    setMenu(toggle.getAttribute("aria-expanded") !== "true"),
+  );
+  document
+    .querySelector("#menu-close")
+    ?.addEventListener("click", () => setMenu(false, true));
+  panel?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    setMenu(false, true);
+  });
+  panel?.addEventListener("close", () => {
+    closing = false;
+    menuAnimation?.cancel();
+    panel.classList.remove("is-active");
+    document.body.style.overflow = bodyOverflow;
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.setAttribute("aria-label", toggle.dataset.open ?? "");
+    lastScrollY = Math.max(0, window.scrollY);
+    syncScrollState();
+  });
+  panel?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) setMenu(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true")
+      setMenu(false, true);
+  });
+  document.addEventListener("click", (e) => {
+    if (!(e.target as HTMLElement).closest("#site-header")) setMenu(false);
+  });
+  matchMedia("(min-width:1024px)").addEventListener("change", (e) => {
+    if (e.matches) setMenu(false);
+  });
+  window.addEventListener("scroll", syncScrollState, { passive: true });
+</script>

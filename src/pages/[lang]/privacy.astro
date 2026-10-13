@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import CTA from "../../components/CTA.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import { getContent } from "../../data/content";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const messages = {
+  title: `${t.privacyTitle} | Vaul Software`,
+  description: t.privacyIntro,
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">{t.privacyLink}</span>
+        <h1 class="display">{t.privacyTitle}</h1>
+        <p class="intro">{t.privacyIntro}</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap max-w-3xl">
+        {t.privacySections.map((p) => (
+          <article class="mb-10">
+            <h2 class="text-xl font-semibold">{p[0]}</h2>
+            <p class="intro mt-4">{p[1]}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import type { Locale } from "../lib/i18n";
+const { lang } = Astro.props as { lang: Locale };
+---
+
+<div class="currency-selector">
+  <label for="pricing-currency">{lang === "es" ? "Moneda" : "Currency"}</label>
+  <select id="pricing-currency" aria-describedby="currency-note">
+    <option value="COP">
+      COP · {lang === "es" ? "Pesos colombianos" : "Colombian pesos"}
+    </option>
+    <option value="USD">
+      USD · {lang === "es" ? "Dólares estadounidenses" : "US dollars"}
+    </option>
+  </select>
+  <p id="currency-note">
+    {lang === "es"
+      ? "Tarifas fijas por mercado. Puedes cambiar la moneda."
+      : "Fixed market prices. You can change the currency."}
+  </p>
+  <span class="sr-only" aria-live="polite" data-currency-announcement></span>
+</div>
+<noscript>
+  <p>
+    {lang === "es"
+      ? "Los precios se muestran en COP. Activa JavaScript para cambiar la moneda."
+      : "Prices are shown in COP. Enable JavaScript to change currency."}
+  </p>
+</noscript>
+<script>
+  import { initializePricingCurrency } from "../lib/pricing-currency";
+  initializePricingCurrency();
+</script>
+<style>
+  .currency-selector {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    margin-bottom: 28px;
+  }
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  select {
+    padding: 11px 34px 11px 14px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    max-width: 100%;
+  }
+  p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (max-width: 767px) {
+    p {
+      flex-basis: 100%;
+    }
+  }
+</style>

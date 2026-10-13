@@ -1,0 +1,121 @@
+---
+import PricingPreview from "../../components/PricingPreview.astro";
+import StockPhoto from "../../components/StockPhoto.astro";
+import HeroShowcase from "../../components/HeroShowcase.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Arrow from "../../components/Arrow.astro";
+import ServicesGrid from "../../components/ServicesGrid.astro";
+import ProductFeature from "../../components/ProductFeature.astro";
+import WorkFeature from "../../components/WorkFeature.astro";
+import Process from "../../components/Process.astro";
+import CTA from "../../components/CTA.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import { getContent, services } from "../../data/content";
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const messages = {
+  title:
+    lang === "es"
+      ? "Vaul Software | Desarrollo web y software a medida"
+      : "Vaul Software | Web development & custom software",
+  description: t.heroDesc,
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-layout">
+          <div>
+            <span class="eyebrow">{t.eyebrow}</span>
+            <h1 class="display">
+              {t.heroA}
+              <br />
+              <span class="hero-blue">{t.heroB}</span>
+            </h1>
+            <p class="intro">{t.heroDesc}</p>
+            <div class="hero-actions">
+              <a class="btn" href={`/${lang}/contact/`}>
+                {t.start}
+                <Arrow />
+              </a>
+              <a class="btn btn-secondary" href={`/${lang}/work/`}>
+                {t.workLink}
+                <Arrow />
+              </a>
+            </div>
+          </div>
+          <HeroShowcase lang={lang} />
+        </div>
+        <div class="hero-foot">
+          {services[lang].map((s) => (
+            <span>
+              <i aria-hidden="true"></i>
+              {s.name}
+            </span>
+          ))}
+          <span>
+            Vaul Software /{" "}
+            {lang === "es"
+              ? "De la idea al lanzamiento"
+              : "From idea to launch"}
+          </span>
+        </div>
+      </div>
+    </section>
+    <section class="section bg-white">
+      <div class="wrap">
+        <span class="eyebrow">{t.servicesLabel}</span>
+        <div class="section-head">
+          <h2 class="heading">{t.servicesHeading}</h2>
+          <p class="intro">{t.servicesDesc}</p>
+        </div>
+        <ServicesGrid lang={lang} />
+      </div>
+    </section>
+    <ProductFeature lang={lang} />
+    <section class="section">
+      <div class="wrap">
+        <span class="eyebrow">{t.workLabel}</span>
+        <div class="section-head">
+          <h2 class="heading max-w-xl">{t.workHeading}</h2>
+          <p class="intro">{t.workDesc}</p>
+        </div>
+        <WorkFeature lang={lang} />
+      </div>
+    </section>
+    <section class="section purpose">
+      <div class="wrap purpose-grid">
+        <div>
+          <span class="eyebrow">{t.purposeLabel}</span>
+          <h2 class="heading">{t.purposeHeading}</h2>
+          <p class="intro mt-6">{t.purposeDesc}</p>
+          <a class="text-link mt-6" href={`/${lang}/about/`}>
+            {t.about}
+            <Arrow />
+          </a>
+          <div class="mt-7">
+            <StockPhoto lang={lang} image="development" compact />
+          </div>
+        </div>
+        <div class="principles">
+          {t.principles.map((p) => (
+            <div class="principle">
+              <h3>{p[0]}</h3>
+              <p>{p[1]}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <Process lang={lang} illustrated />
+    <PricingPreview lang={lang} />
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>

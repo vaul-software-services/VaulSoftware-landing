@@ -1,0 +1,191 @@
+---
+import { getContent } from "../data/content";
+import "../styles/global.css";
+
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import Footer from "../components/Footer.astro";
+import CloudflareAnalytics from "../components/CloudflareAnalytics.astro";
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  lang: Locale;
+  messages: {
+    title: string;
+    description: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImageAlt?: string;
+    ogImage?: string;
+  };
+  noindex?: boolean;
+}
+
+const { lang, messages, noindex = false } = Astro.props;
+
+const t = getContent(lang);
+
+const normalizedPath = Astro.url.pathname.endsWith("/")
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonical = new URL(normalizedPath, Astro.site);
+const ogImage = new URL(
+  messages.ogImage ?? (lang === "es" ? "/og-image-es.png" : "/og-image.png"),
+  Astro.site,
+);
+const englishPath = normalizedPath.replace(/^\/(en|es)(?=\/|$)/, "/en");
+const spanishPath = normalizedPath.replace(/^\/(en|es)(?=\/|$)/, "/es");
+const siteUrl = new URL("/", Astro.site).toString();
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Vaul Software",
+  url: siteUrl,
+};
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch {}
+        const dark =
+          stored === "dark" ||
+          (stored !== "light" &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        if (
+          !("IntersectionObserver" in window) ||
+          matchMedia("(prefers-reduced-motion: reduce)").matches
+        )
+          return;
+        const root = document.documentElement;
+        root.classList.add("motion-enabled");
+        // Reveal everything if the animation module fails to load.
+        root.dataset.motionTimeout = String(
+          setTimeout(() => root.classList.remove("motion-enabled"), 5000),
+        );
+      })();
+    </script>
+    <!-- Primary SEO -->
+    <title>{messages.title}</title>
+    <meta name="description" content={messages.description} />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, follow" : "index, follow"}
+    />
+
+    {!noindex && (
+      <>
+        <link rel="canonical" href={canonical} />
+        <link
+          rel="alternate"
+          hreflang="en"
+          href={new URL(englishPath, Astro.site)}
+        />
+        <link
+          rel="alternate"
+          hreflang="es"
+          href={new URL(spanishPath, Astro.site)}
+        />
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={new URL(englishPath, Astro.site)}
+        />
+      </>
+    )}
+
+    <!-- Favicon -->
+    <link rel="icon" href="/vaul%20Soft.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+
+    {!noindex && (
+      <>
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content={messages.ogTitle ?? messages.title}
+        />
+        <meta
+          property="og:description"
+          content={messages.ogDescription ?? messages.description}
+        />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:site_name" content="Vaul Software" />
+        <meta
+          property="og:locale"
+          content={lang === "es" ? "es_ES" : "en_US"}
+        />
+        <meta
+          property="og:locale:alternate"
+          content={lang === "es" ? "en_US" : "es_ES"}
+        />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:alt"
+          content={messages.ogImageAlt ?? messages.title}
+        />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={messages.ogTitle ?? messages.title}
+        />
+        <meta
+          name="twitter:description"
+          content={messages.ogDescription ?? messages.description}
+        />
+        <meta name="twitter:image" content={ogImage} />
+        <meta
+          name="twitter:image:alt"
+          content={messages.ogImageAlt ?? messages.title}
+        />
+
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(organizationSchema)}
+        />
+      </>
+    )}
+
+    <CloudflareAnalytics />
+  </head>
+  <body class="bg-paper font-sans text-ink">
+    <a href="#main" class="skip">
+      {t.skip}
+    </a>
+    <slot />
+    <Footer lang={lang} />
+    <WhatsAppButton lang={lang} />
+    <script>
+      import { enhanceDropdowns } from "../lib/dropdowns";
+      enhanceDropdowns();
+      import { initializeMotion } from "../lib/motion";
+      initializeMotion();
+    </script>
+  </body>
+</html>

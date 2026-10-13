@@ -1,0 +1,126 @@
+---
+import Price from "./Price.astro";
+import type { Locale } from "../lib/i18n";
+import { pricingCopy, pricingFeatures, standardPlans } from "../data/pricing";
+const { lang } = Astro.props as { lang: Locale };
+const t = pricingCopy[lang];
+const features = Object.keys(pricingFeatures).filter((id) =>
+  standardPlans.some((plan) => plan.features.includes(id)),
+);
+---
+
+<div
+  class="comparison-scroll"
+  role="region"
+  aria-label={t.compare}
+  tabindex="0"
+>
+  <table>
+    <caption>{t.allPrices}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{t.feature}</th>
+        {standardPlans.map((plan) => (
+          <th scope="col">{plan.name[lang]}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{t.initial}</th>
+        {standardPlans.map((plan) => (
+          <td>
+            {plan.startingAt && <span>{t.startingAt} </span>}
+            <Price
+              cop={plan.initialCOP!}
+              usd={plan.initialUSD!}
+              lang={lang}
+            />{" "}
+            <span data-currency-code>COP</span>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <th scope="row">{t.monthly}</th>
+        {standardPlans.map((plan) => (
+          <td>
+            <Price cop={plan.monthlyCOP!} usd={plan.monthlyUSD!} lang={lang} />{" "}
+            <span data-currency-code>COP</span>
+            {t.perMonth}
+          </td>
+        ))}
+      </tr>
+      {features.map((id) => (
+        <tr>
+          <th scope="row">{pricingFeatures[id][lang]}</th>
+          {standardPlans.map((plan) => (
+            <td class:list={{ included: plan.features.includes(id) }}>
+              <span aria-hidden="true">
+                {plan.features.includes(id) ? "✓" : "—"}
+              </span>
+              <span class="sr-only">
+                {plan.features.includes(id) ? t.inScope : t.notIncluded}
+              </span>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<style>
+  .comparison-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    max-width: 100%;
+    min-width: 0;
+  }
+  table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+  }
+  caption {
+    text-align: left;
+    padding: 18px 22px;
+    color: var(--muted);
+    line-height: 1.8;
+    background: var(--surface);
+    font-size: 13px;
+  }
+  thead {
+    background: var(--soft);
+  }
+  th,
+  td {
+    position: relative;
+    border-top: 1px solid var(--line);
+    padding: 16px 22px;
+    line-height: 1.7;
+  }
+  thead th {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  tbody th {
+    font-weight: 400;
+    color: var(--muted);
+    width: 40%;
+  }
+  td {
+    position: relative;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  thead th:not(:first-child) {
+    text-align: center;
+  }
+  .included {
+    color: var(--link);
+    font-size: 17px;
+  }
+</style>

@@ -1,0 +1,296 @@
+---
+import type { Locale } from "../lib/i18n";
+import {
+  standardPlans,
+  pricingCopy,
+  pricingFeatures,
+  planContactPath,
+  additionalFeatures,
+} from "../data/pricing";
+import Price from "./Price.astro";
+import Arrow from "./Arrow.astro";
+const { lang, compact = false } = Astro.props as {
+  lang: Locale;
+  compact?: boolean;
+};
+const t = pricingCopy[lang];
+---
+
+<div class:list={["pricing-grid", { compact }]}>
+  {standardPlans.map((plan) => (
+    <article class:list={["price-card", { recommended: plan.recommended }]}>
+      <div class="plan-header">
+        <h3>{plan.name[lang]}</h3>
+        {plan.recommended && <span class="plan-badge">{t.recommended}</span>}
+      </div>
+      <p class="plan-description">{plan.description[lang]}</p>
+      <div class="price-initial">
+        {plan.startingAt && <span class="starting-price">{t.startingAt}</span>}
+        <strong>
+          <Price cop={plan.initialCOP!} usd={plan.initialUSD!} lang={lang} />
+        </strong>
+        <span class="currency" data-currency-code>
+          COP
+        </span>
+        <p>{t.initial}</p>
+      </div>
+      <div class="price-monthly">
+        <span class="price-plus" aria-hidden="true">
+          +
+        </span>
+        <div>
+          <strong>
+            <Price cop={plan.monthlyCOP!} usd={plan.monthlyUSD!} lang={lang} />{" "}
+            <span>
+              <span data-currency-code>COP</span>
+              {t.perMonth}
+            </span>
+          </strong>
+          <p>{t.monthly}</p>
+        </div>
+      </div>
+      {!compact && (
+        <div class="plan-scope">
+          <h4>{t.included}</h4>
+          <ul class="plan-features">
+            {additionalFeatures(plan).map((id) => (
+              <li>
+                <span aria-hidden="true">✓</span>
+                {pricingFeatures[id][lang]}
+              </li>
+            ))}
+          </ul>
+          <p class="plan-note">{plan.note[lang]}</p>
+          <details class="plan-exclusions">
+            <summary>{t.excluded}</summary>
+            <ul>
+              {plan.exclusions.map((text) => (
+                <li>{text[lang]}</li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      )}
+      <a
+        class:list={["btn", { "btn-secondary": !plan.recommended }]}
+        href={planContactPath(lang, plan)}
+        data-pricing-contact
+        aria-label={`${plan.cta[lang]}: ${plan.name[lang]}`}
+      >
+        {plan.cta[lang]}
+        <Arrow />
+      </a>
+    </article>
+  ))}
+</div>
+<style>
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .price-card {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+  }
+  .price-card.recommended {
+    border: 2px solid #2563eb;
+    padding: 27px;
+  }
+  .plan-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    min-height: 57px;
+    align-content: flex-start;
+  }
+  .plan-header h3 {
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+  .plan-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--link);
+    background: color-mix(in srgb, #2563eb 9%, var(--surface));
+    padding: 5px 9px;
+    border-radius: 3px;
+  }
+  .plan-description {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin: 12px 0 27px;
+    min-height: 76px;
+  }
+  .starting-price {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+  .price-initial strong {
+    font-size: clamp(30px, 3vw, 38px);
+    letter-spacing: -0.05em;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .currency {
+    font-size: 12px;
+    margin-left: 7px;
+    color: var(--muted);
+  }
+  .price-initial p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .price-monthly {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin: 22px 0 27px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .price-plus {
+    font-size: 23px;
+    color: var(--link);
+  }
+  .price-monthly strong {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .price-monthly strong span {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .price-monthly p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 6px;
+  }
+  .plan-scope {
+    flex: 1;
+  }
+  .plan-scope h4 {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .inherit-note {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .plan-features {
+    display: grid;
+    gap: 11px;
+    margin-top: 18px;
+  }
+  .plan-features li {
+    display: flex;
+    gap: 9px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .plan-features li span {
+    color: var(--link);
+  }
+  .plan-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    border-top: 1px solid var(--line);
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+  .plan-exclusions {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-top: 18px;
+  }
+  .plan-exclusions summary {
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .plan-exclusions ul {
+    display: grid;
+    gap: 9px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    padding-left: 16px;
+    list-style: disc;
+  }
+  .price-card .btn {
+    width: 100%;
+    margin-top: 26px;
+    gap: 15px;
+  }
+  .compact .plan-header {
+    min-height: 57px;
+  }
+  .compact .plan-description {
+    min-height: 76px;
+  }
+  @media (max-width: 1100px) and (min-width: 768px) {
+    .pricing-grid {
+      gap: 15px;
+    }
+    .price-card {
+      padding: 20px;
+    }
+    .price-card.recommended {
+      padding: 19px;
+    }
+    .plan-header h3 {
+      font-size: 21px;
+    }
+    .price-initial strong {
+      font-size: 30px;
+    }
+    .price-monthly strong {
+      font-size: 20px;
+    }
+  }
+  @media (max-width: 767px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    .price-card {
+      padding: 26px;
+    }
+    .price-card.recommended {
+      padding: 25px;
+    }
+    .plan-header,
+    .compact .plan-header {
+      min-height: 0;
+    }
+    .plan-description,
+    .compact .plan-description {
+      min-height: 0;
+    }
+    .price-initial strong {
+      font-size: 36px;
+    }
+  }
+</style>

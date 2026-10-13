@@ -1,0 +1,63 @@
+---
+// Abstract "connected systems" motif for the hero — not a logo stand-in.
+// Kept deliberately quiet: thin lines, modest node sizes, slow drift only.
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  class={`drift ${className}`}
+  viewBox="40 30 340 300"
+  fill="none"
+  aria-hidden="true"
+  role="presentation"
+>
+  <defs>
+    <linearGradient id="nodeGradientA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563EB" />
+      <stop offset="1" stop-color="#60A5FA" />
+    </linearGradient>
+    <linearGradient id="nodeGradientB" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#60A5FA" />
+      <stop offset="1" stop-color="#2563EB" />
+    </linearGradient>
+  </defs>
+
+  <g stroke="#0F172A" stroke-opacity="0.12" stroke-width="1.5">
+    <line x1="150" y1="200" x2="70" y2="280" />
+    <line x1="150" y1="200" x2="230" y2="300" />
+    <line x1="150" y1="200" x2="300" y2="140" />
+    <line x1="150" y1="200" x2="120" y2="100" />
+    <line x1="300" y1="140" x2="350" y2="250" />
+    <line x1="300" y1="140" x2="260" y2="60" />
+    <line x1="300" y1="140" x2="230" y2="300" />
+  </g>
+
+  <circle cx="150" cy="200" r="16" fill="url(#nodeGradientA)" />
+  <circle cx="300" cy="140" r="12" fill="url(#nodeGradientB)" />
+  <circle cx="70" cy="280" r="7" fill="#60A5FA" />
+  <circle cx="230" cy="300" r="6" fill="#2563EB" />
+  <circle cx="350" cy="250" r="8" fill="#60A5FA" />
+  <circle cx="260" cy="60" r="6" fill="#2563EB" />
+  <circle cx="120" cy="100" r="5" fill="#60A5FA" />
+</svg>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .drift {
+      animation: drift 9s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(6px, -8px);
+    }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import StockPhoto from "../../components/StockPhoto.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import ContactForm from "../../components/ContactForm.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import { getContent } from "../../data/content";
+import { contactEmail } from "../../lib/site";
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const messages = {
+  title: `${t.contact} | Vaul Software`,
+  description: t.contactIntro,
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="section">
+      <div class="wrap two-col">
+        <div>
+          <span class="eyebrow">{t.contact}</span>
+          <h1 class="display !text-[clamp(38px,4.4vw,58px)]">
+            {t.contactTitle}
+          </h1>
+          <p class="intro mt-6">{t.contactIntro}</p>
+          <div class="contact-info">
+            <span class="eyebrow">{t.email}</span>
+            <a href={`mailto:${contactEmail}`}>{contactEmail} ↗</a>
+            <h2>{t.contactNextTitle}</h2>
+            <p>{t.contactNext}</p>
+          </div>
+          <div class="mt-8">
+            <StockPhoto lang={lang} image="writing" compact />
+          </div>
+        </div>
+        <ContactForm lang={lang} />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

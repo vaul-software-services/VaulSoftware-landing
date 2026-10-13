@@ -1,0 +1,69 @@
+---
+import { pricingCopy } from "../data/pricing";
+import { products } from "../data/projects";
+import type { Locale } from "../lib/i18n";
+import { getContent, services } from "../data/content";
+import Logo from "./Logo.astro";
+import { contactEmail } from "../lib/site";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a
+          class="brand"
+          href={`/${lang}/`}
+          aria-label={`Vaul Software — ${t.home}`}
+        >
+          <Logo monochrome />
+        </a>
+        <p>
+          {t.heroA} {t.heroB}
+        </p>
+        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+      </div>
+      <nav aria-label={t.companyGroup}>
+        <h2>{t.companyGroup}</h2>
+        <ul>
+          {[
+            ["about", t.about],
+            ["pricing", pricingCopy[lang].nav],
+            ["work", t.work],
+            ["contact", t.contact],
+          ].map(([r, l]) => (
+            <li>
+              <a href={`/${lang}/${r}/`}>{l}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <nav aria-label={t.servicesGroup}>
+        <h2>{t.servicesGroup}</h2>
+        <ul>
+          {services[lang].map((s) => (
+            <li>
+              <a href={`/${lang}/services/${s.slug}/`}>{s.name}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <nav aria-label={t.productsGroup}>
+        <h2>{t.productsGroup}</h2>
+        {products.map((p) => (
+          <a class="block" href={`/${lang}/products/${p.slug}/`}>
+            {p.name}
+          </a>
+        ))}
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>
+        © {new Date().getFullYear()} Vaul Software. {t.copyright}
+      </span>
+      <a href={`/${lang}/privacy/`}>{t.privacyLink}</a>
+    </div>
+  </div>
+</footer>

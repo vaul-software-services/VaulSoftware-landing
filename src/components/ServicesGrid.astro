@@ -1,0 +1,41 @@
+---
+import { getContent, services } from "../data/content";
+import type { Locale } from "../lib/i18n";
+import Arrow from "./Arrow.astro";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+const icons = [
+  "M3 6h18v14H3V6Zm0 4h18M7 3v3m10-3v3M8 14l-2 2 2 2m8-4 2 2-2 2m-3-5-2 6",
+  "M4 4h6v6H4zM14 14h6v6h-6zM14 7h3a3 3 0 0 1 3 3v1M10 17H7a3 3 0 0 1-3-3v-1M17 4l3 3-3 3M7 20l-3-3 3-3",
+  "m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5",
+];
+---
+
+<div class="service-grid">
+  {services[lang].map((s, i) => (
+    <article class="service-card">
+      <svg
+        class="service-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d={icons[i]} />
+      </svg>
+      <h3>{s.name}</h3>
+      <p>{s.description}</p>
+      <a
+        class="text-link"
+        href={`/${lang}/services/${s.slug}/`}
+        aria-label={`${t.learn}: ${s.name}`}
+      >
+        {t.learn}
+        <Arrow />
+      </a>
+    </article>
+  ))}
+</div>

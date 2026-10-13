@@ -1,0 +1,20 @@
+{
+  "brandHomeLabel": "Vaul Software — Home",
+  "mainNavigationLabel": "Main navigation",
+  "mobileNavigationLabel": "Mobile navigation",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "languageLabel": "Language",
+  "switchToDark": "Switch to dark mode",
+  "switchToLight": "Switch to light mode",
+  "languages": { "en": "English", "es": "Spanish" },
+  "links": {
+    "home": "Home",
+    "services": "Services",
+    "products": "Products",
+    "work": "Work",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "cta": "Talk to us"
+}

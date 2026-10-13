@@ -1,0 +1,73 @@
+---
+import StockPhoto from "../../components/StockPhoto.astro";
+import PricingPreview from "../../components/PricingPreview.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import CTA from "../../components/CTA.astro";
+import Arrow from "../../components/Arrow.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import { getContent, services } from "../../data/content";
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const messages = {
+  title: `${t.services} | Vaul Software`,
+  description: t.servicesIntro,
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="page-hero">
+      <div class="wrap two-col items-center">
+        <div>
+          <span class="eyebrow">{t.services}</span>
+          <h1 class="display !text-[clamp(38px,4.4vw,58px)]">
+            {t.servicesTitle}
+          </h1>
+          <p class="intro">{t.servicesIntro}</p>
+        </div>
+        <StockPhoto lang={lang} image="workspace" />
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        {services[lang].map((s, i) => (
+          <article class="service-row">
+            <div>
+              <span class="eyebrow">0{i + 1}</span>
+              <h2>{s.name}</h2>
+              <p>{s.description}</p>
+              <a class="text-link mt-6" href={`/${lang}/services/${s.slug}/`}>
+                {t.learn}
+                <Arrow />
+              </a>
+            </div>
+            <div>
+              <p class="!mt-0">{s.problem}</p>
+              <ul class="list">
+                {s.examples.map((e) => (
+                  <li>{e}</li>
+                ))}
+              </ul>
+              <p>{s.benefits.join(" · ")}</p>
+              <a
+                class="text-link mt-5"
+                href={`/${lang}/contact/?service=${s.slug}`}
+              >
+                {t.start}
+                <Arrow />
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+    <PricingPreview lang={lang} />
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>

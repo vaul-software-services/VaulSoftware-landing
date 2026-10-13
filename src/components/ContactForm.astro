@@ -1,0 +1,281 @@
+---
+import { pricingPlans, pricingCopy } from "../data/pricing";
+import type { Locale } from "../lib/i18n";
+import { getContent, services } from "../data/content";
+import { contactEmail } from "../lib/site";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+---
+
+<form
+  id="project-form"
+  class="form"
+  novalidate
+  data-email={contactEmail}
+  data-lang={lang}
+  data-required={t.requiredError}
+  data-invalid-email={t.emailError}
+  data-ready={t.draftReady}
+  data-error={t.draftError}
+  data-preparing={t.preparing}
+  data-prepare={t.prepare}
+  data-subject={
+    lang === "es"
+      ? "Consulta sobre un proyecto — Vaul Software"
+      : "Project enquiry — Vaul Software"
+  }
+>
+  <h2>{t.contactForm}</h2>
+  <div class="contact-trap" aria-hidden="true">
+    <label for="website">Website</label>
+    <input id="website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+  <p class="form-note">
+    {lang === "es"
+      ? "Envíanos tu consulta y responderemos al correo que indiques."
+      : "Send your enquiry and we will reply to your email."}
+  </p>
+  <div class="form-grid">
+    <div>
+      <label for="name">{t.name}</label>
+      <input
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+        maxlength="100"
+        aria-describedby="name-error"
+      />
+      <p id="name-error" class="field-error" hidden></p>
+    </div>
+    <div>
+      <label for="email">{t.email}</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        maxlength="254"
+        aria-describedby="email-error"
+      />
+      <p id="email-error" class="field-error" hidden></p>
+    </div>
+  </div>
+  <label for="company">
+    {t.company} <span class="text-slate">({t.optional})</span>
+  </label>
+  <input
+    id="company"
+    name="company"
+    autocomplete="organization"
+    maxlength="150"
+  />
+  <label for="service">{t.service}</label>
+  <select id="service" name="service" required aria-describedby="service-error">
+    <option value="">{t.select}</option>
+    {services[lang].map((s) => (
+      <option value={s.slug}>{s.name}</option>
+    ))}
+    <option value="unsure">{t.unsure}</option>
+  </select>
+  <p id="service-error" class="field-error" hidden></p>
+  <label for="currency">
+    {lang === "es" ? "Moneda de la propuesta" : "Proposal currency"}
+  </label>
+  <select id="currency" name="currency">
+    <option value="COP">COP</option>
+    <option value="USD">USD</option>
+  </select>
+  <label for="plan">
+    {pricingCopy[lang].planLabel} <span class="text-slate">({t.optional})</span>
+  </label>
+  <select id="plan" name="plan">
+    <option value="">{pricingCopy[lang].noPlan}</option>
+    {pricingPlans.map((plan) => (
+      <option value={plan.id} data-service={plan.service}>
+        {plan.name[lang]}
+      </option>
+    ))}
+  </select>
+  <label for="message">{t.message}</label>
+  <textarea
+    id="message"
+    name="message"
+    rows="5"
+    required
+    maxlength="3000"
+    placeholder={t.messageHint}
+    aria-describedby="message-error"
+  ></textarea>
+  <p id="message-error" class="field-error" hidden></p>
+  <button class="btn" type="submit">
+    {t.prepare}
+    <span aria-hidden="true">↗</span>
+  </button>
+  <p class="form-note">
+    {t.privacyNote}{" "}
+    <a class="underline" href={`/${lang}/privacy/`}>
+      {t.privacyLink}
+    </a>
+    .
+  </p>
+  <noscript>
+    <p class="form-note">
+      {t.emailFallback}{" "}
+      <a href={`mailto:${contactEmail}`} class="underline">
+        {contactEmail}
+      </a>
+    </p>
+    <style>
+      #project-form button {
+        display: none;
+      }
+    </style>
+  </noscript>
+  <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+  <div id="draft-container" hidden>
+    <label for="email-draft">{t.draft}</label>
+    <textarea id="email-draft" readonly rows="8"></textarea>
+    <a class="text-link" href={`mailto:${contactEmail}`}>
+      {lang === "es" ? "Escribir por correo" : "Write by email"}
+    </a>
+    <p class="form-note">{contactEmail}</p>
+  </div>
+</form>
+<script>
+  const form = document.querySelector<HTMLFormElement>("#project-form");
+  const service = document.querySelector<HTMLSelectElement>("#service");
+  const currencySelect = document.querySelector<HTMLSelectElement>("#currency");
+  const currencyParam = new URLSearchParams(location.search).get("currency");
+  let savedCurrency: string | null = null;
+  try {
+    savedCurrency = localStorage.getItem("vaul-pricing-currency");
+  } catch {}
+  const currency = currencyParam ?? savedCurrency;
+  if (currencySelect && (currency === "USD" || currency === "COP"))
+    currencySelect.value = currency;
+  const requested = new URLSearchParams(location.search).get("service");
+  if (
+    service &&
+    requested &&
+    Array.from(service.options).some((o) => o.value === requested)
+  )
+    service.value = requested;
+  const planSelect = document.querySelector<HTMLSelectElement>("#plan");
+  const planParam = new URLSearchParams(location.search).get("plan");
+  const requestedPlan =
+    planParam === "web-presence" ? "landing-essential" : planParam;
+  function syncPlanService() {
+    const selectedService = planSelect?.selectedOptions[0]?.dataset.service;
+    if (service && selectedService) {
+      service.value = selectedService;
+      service.dispatchEvent(new Event("select:sync"));
+    }
+  }
+  if (
+    planSelect &&
+    requestedPlan &&
+    Array.from(planSelect.options).some(
+      (option) => option.value === requestedPlan,
+    )
+  ) {
+    planSelect.value = requestedPlan;
+    syncPlanService();
+  }
+  planSelect?.addEventListener("change", syncPlanService);
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const fields = Array.from(
+      form.querySelectorAll<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >("[required]"),
+    );
+    let firstInvalid: HTMLElement | undefined;
+    for (const field of fields) {
+      const invalid = !field.value.trim() || !field.validity.valid;
+      const error = document.getElementById(`${field.id}-error`);
+      field.setAttribute("aria-invalid", String(invalid));
+      if (error) {
+        error.hidden = !invalid;
+        error.textContent = field.validity.typeMismatch
+          ? (form.dataset.invalidEmail ?? "")
+          : (form.dataset.required ?? "");
+      }
+      if (invalid && !firstInvalid)
+        firstInvalid =
+          field instanceof HTMLSelectElement
+            ? (document.getElementById(`${field.id}-trigger`) ?? field)
+            : field;
+    }
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+    const button = form.querySelector<HTMLButtonElement>(
+      "button[type=submit]",
+    )!;
+    button.disabled = true;
+    button.textContent = form.dataset.preparing ?? "";
+    const draft = Array.from(
+      form.querySelectorAll<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >("[name]"),
+    )
+      .filter((field) => field.name !== "website")
+      .map((field) => {
+        const label =
+          form
+            .querySelector(
+              `label[for="${field.id}"], label[for="${field.id}-trigger"]`,
+            )
+            ?.textContent?.trim() ?? field.name;
+        const value =
+          field instanceof HTMLSelectElement
+            ? field.selectedOptions[0]?.textContent
+            : field.value;
+        return `${label}: ${value || "—"}`;
+      })
+      .join("\n\n");
+    const output = document.querySelector<HTMLTextAreaElement>("#email-draft");
+    if (output) output.value = `${form.dataset.subject}\n\n${draft}`;
+    const status = document.getElementById("form-status");
+    const payload = Object.fromEntries(new FormData(form).entries());
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, lang: form.dataset.lang }),
+        signal: AbortSignal.timeout(15000),
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true) throw new Error("send_failed");
+      document.getElementById("draft-container")?.setAttribute("hidden", "");
+      if (status) status.textContent = form.dataset.ready ?? "";
+    } catch {
+      document.getElementById("draft-container")?.removeAttribute("hidden");
+      if (status) status.textContent = form.dataset.error ?? "";
+    } finally {
+      button.disabled = false;
+      button.textContent = form.dataset.prepare ?? "";
+    }
+  });
+  form?.addEventListener("input", (event) => {
+    const field = event.target as HTMLInputElement;
+    if (field.validity?.valid && field.value.trim()) {
+      field.removeAttribute("aria-invalid");
+      const error = document.getElementById(`${field.id}-error`);
+      if (error) error.hidden = true;
+    }
+  });
+</script>
+
+<style>
+  .contact-trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+</style>

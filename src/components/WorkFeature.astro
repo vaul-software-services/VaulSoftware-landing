@@ -1,0 +1,38 @@
+---
+import { projects } from "../data/projects";
+import { getContent } from "../data/content";
+import type { Locale } from "../lib/i18n";
+import ProjectMedia from "./ProjectMedia.astro";
+import Arrow from "./Arrow.astro";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+---
+
+{projects.map((project) => (
+  <div class="work-layout">
+    <ProjectMedia
+      lang={lang}
+      src={project.image}
+      alt={project.content[lang].caption}
+      url={new URL(project.url).hostname}
+    />
+    <div>
+      <span class="pill">{project.content[lang].category}</span>
+      <h3>
+        {project.name}
+        <span class="text-brand">.</span>
+      </h3>
+      <p class="intro">{project.content[lang].summary}</p>
+      <div class="stack">
+        {project.technologies.map((tech) => (
+          <span>{tech}</span>
+        ))}
+        <span>{lang === "es" ? "Diseño adaptable" : "Responsive design"}</span>
+      </div>
+      <a class="text-link" href={`/${lang}/work/${project.slug}/`}>
+        {t.case}
+        <Arrow />
+      </a>
+    </div>
+  </div>
+))}

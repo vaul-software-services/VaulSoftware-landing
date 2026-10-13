@@ -1,0 +1,28 @@
+{
+  "title": "Servicios | Vaul Software",
+  "description": "Desarrollo web, automatización de negocios y desarrollo de software a medida por Vaul Software.",
+  "ogTitle": "Servicios | Vaul Software",
+  "ogDescription": "Soluciones de software a medida para empresas: desarrollo web, automatización y sistemas a medida.",
+  "ogImageAlt": "Vaul Software — Servicios",
+  "heading": "Soluciones de software construidas para cómo opera tu negocio.",
+  "intro": "Trabajamos con empresas que necesitan software construido alrededor de su operación real, no al revés.",
+  "items": [
+    {
+      "name": "Desarrollo web",
+      "description": "Sitios y aplicaciones web construidos para rendimiento, accesibilidad y mantenibilidad a largo plazo."
+    },
+    {
+      "name": "Automatización de negocios",
+      "description": "Reemplazamos procesos manuales y repetitivos con sistemas automatizados confiables."
+    },
+    {
+      "name": "Desarrollo de software a medida",
+      "description": "Software diseñado desde cero según tus requerimientos y restricciones específicas."
+    }
+  ],
+  "cta": {
+    "heading": "¿No sabes por dónde empezar?",
+    "description": "Cuéntanos el problema y te ayudamos a definir el alcance correcto.",
+    "label": "Contáctanos"
+  }
+}

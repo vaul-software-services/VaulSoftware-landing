@@ -1,0 +1,163 @@
+---
+import type { Locale } from "../lib/i18n";
+const { lang } = Astro.props as { lang: Locale };
+const labels =
+  lang === "es"
+    ? {
+        website: "PlayZone VIP: sitio web comercial",
+        app: "CourtRank: reservas en la aplicación iOS",
+        caption: "Sitios web. Aplicaciones. Experiencias reales.",
+      }
+    : {
+        website: "PlayZone VIP: commercial website",
+        app: "CourtRank: bookings in the iOS app",
+        caption: "Websites. Applications. Real experiences.",
+      };
+---
+
+<figure class="hero-showcase">
+  <div class="showcase-grid" aria-hidden="true"></div>
+  <div class="showcase-browser">
+    <div class="showcase-bar" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+      <span>playzonevip.com</span>
+    </div>
+    <img
+      src="/images/playzone-vip.webp"
+      alt={labels.website}
+      width="1280"
+      height="720"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="showcase-phone">
+    <img
+      src="/images/courtrank-app-bookings.webp"
+      alt={labels.app}
+      width="314"
+      height="680"
+      decoding="async"
+    />
+  </div>
+  <figcaption>{labels.caption}</figcaption>
+</figure>
+<style>
+  .hero-showcase {
+    position: relative;
+    min-height: 420px;
+    margin: 0 0 0 12px;
+  }
+  .showcase-grid {
+    position: absolute;
+    inset: 0 0 42px 10px;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    border: 1px solid var(--line);
+  }
+  .showcase-browser {
+    position: absolute;
+    top: 56px;
+    right: 0;
+    left: 22px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: 0 24px 48px #00000018;
+  }
+  .showcase-browser img {
+    width: 100%;
+    display: block;
+  }
+  .showcase-bar {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    background: var(--surface);
+  }
+  .showcase-bar i {
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .showcase-bar span {
+    font-size: 9px;
+    color: var(--muted);
+    margin-inline: auto;
+  }
+  .showcase-phone {
+    position: absolute;
+    bottom: 38px;
+    left: 0;
+    width: 135px;
+    border: 6px solid #242428;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 16px 35px #0003;
+  }
+  .showcase-phone img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hero-showcase figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: right;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  @media (max-width: 1100px) and (min-width: 768px) {
+    .hero-showcase {
+      min-height: 360px;
+    }
+    .showcase-phone {
+      width: 112px;
+    }
+    .showcase-browser {
+      top: 35px;
+      left: 12px;
+    }
+  }
+  @media (max-width: 767px) {
+    .hero-showcase {
+      margin: 20px 0 0;
+      min-height: 360px;
+      max-width: 460px;
+      width: 100%;
+    }
+    .showcase-browser {
+      top: 25px;
+      left: 35px;
+    }
+    .showcase-grid {
+      inset: 0 0 35px 10px;
+    }
+    .showcase-phone {
+      width: 130px;
+      bottom: 30px;
+    }
+    .hero-showcase figcaption {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 360px) {
+    .hero-showcase {
+      min-height: 315px;
+    }
+    .showcase-phone {
+      width: 110px;
+    }
+  }
+</style>

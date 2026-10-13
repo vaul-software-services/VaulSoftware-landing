@@ -1,0 +1,146 @@
+---
+import type { Locale } from "../lib/i18n";
+const { lang } = Astro.props as { lang: Locale };
+const es = lang === "es";
+const cards = es
+  ? [
+      {
+        title: "Landing Esencial",
+        lead: "Para presentar tu negocio y recibir consultas.",
+        items: [
+          "Una página con hasta 5 secciones: por ejemplo, presentación, servicios, beneficios, preguntas y contacto.",
+          "Trabajamos con los textos, imágenes y datos que entregas. Diseño responsive y SEO básico.",
+          "Hasta 2 rondas de revisiones sobre el alcance acordado. Reservas y automatizaciones se cotizan aparte.",
+        ],
+      },
+      {
+        title: "Landing Profesional",
+        lead: "Para explicar mejor tu propuesta de valor y guiar al visitante hacia el contacto.",
+        items: [
+          "Mayor trabajo en la jerarquía del contenido y en la composición visual de las secciones.",
+          "Diseño personalizado para presentar servicios, diferenciales y material real de tu negocio con más detalle.",
+          "Incluye optimización del rendimiento. La cantidad de secciones y los entregables se fijan en la propuesta; tampoco incluye backend ni reservas.",
+        ],
+      },
+      {
+        title: "¿Qué necesitas aportar?",
+        lead: "Preparamos el alcance antes de empezar.",
+        items: [
+          "Nombre del negocio, logo si lo tienes, servicios y datos de contacto.",
+          "Textos e imágenes con permiso de uso. Acordamos cómo organizar el material; redacción completa, fotografía e identidad de marca se cotizan aparte.",
+          "Una persona que reúna los comentarios de cada revisión. Las nuevas secciones, funciones o rediseños se cotizan antes de ejecutarlos.",
+        ],
+      },
+    ]
+  : [
+      {
+        title: "Essential Landing",
+        lead: "To introduce your business and receive enquiries.",
+        items: [
+          "One page with up to 5 sections: for example, introduction, services, benefits, questions and contact.",
+          "We work with your supplied text, images and business information. Responsive design and basic SEO.",
+          "Up to 2 revision rounds within the agreed scope. Bookings and automations are quoted separately.",
+        ],
+      },
+      {
+        title: "Professional Landing",
+        lead: "To explain your value and guide visitors towards contact.",
+        items: [
+          "More work on content hierarchy and the visual composition of the sections.",
+          "Custom design to present services, differentiators and real business material in greater detail.",
+          "Includes performance optimization. Section counts and deliverables are fixed in the proposal; custom backend and bookings are excluded.",
+        ],
+      },
+      {
+        title: "What do you provide?",
+        lead: "We define the scope before starting.",
+        items: [
+          "Business name, your logo if available, services and contact information.",
+          "Text and images you have permission to use. We agree how to organize them; full copywriting, photography and brand identity are quoted separately.",
+          "One person to consolidate feedback for each revision. New sections, features or redesigns are quoted before work begins.",
+        ],
+      },
+    ];
+---
+
+<section class="section landing-guide">
+  <div class="wrap">
+    <span class="eyebrow">{es ? "Elige por alcance" : "Choose by scope"}</span>
+    <h2 class="heading">
+      {es
+        ? "¿Qué cambia entre las dos landings?"
+        : "What changes between the two landing plans?"}
+    </h2>
+    <p class="intro mt-5">
+      {es
+        ? "La diferencia está en la profundidad del trabajo de diseño y contenido. Ambas son páginas de presentación; las funciones de negocio se cotizan en su plan correspondiente."
+        : "The difference is the depth of design and content work. Both are presentation pages; business functionality is quoted in the corresponding plan."}
+    </p>
+    <div class="guide-grid">
+      {cards.map((card) => (
+        <article>
+          <h3>{card.title}</h3>
+          <p>{card.lead}</p>
+          <ul>
+            {card.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+    <p class="guide-note">
+      {es
+        ? "La mensualidad empieza al activar el servicio y cubre alojamiento y soporte técnico básico. No incluye rediseños, nuevas funciones ni modificaciones ilimitadas."
+        : "Monthly billing begins at service activation and covers hosting and basic technical support. It excludes redesigns, new features and unlimited changes."}
+    </p>
+  </div>
+</section>
+<style>
+  .landing-guide {
+    border-top: 1px solid var(--line);
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 40px;
+  }
+  article {
+    padding: 26px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  h3 {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  article p {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  ul {
+    margin-top: 20px;
+    padding-left: 18px;
+    list-style: disc;
+    display: grid;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .guide-note {
+    margin-top: 26px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

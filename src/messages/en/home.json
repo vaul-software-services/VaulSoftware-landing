@@ -1,0 +1,54 @@
+{
+  "title": "Vaul Software — Custom software engineering & products",
+  "description": "Vaul Software is a software engineering studio building proprietary products and delivering custom software solutions for businesses.",
+  "ogTitle": "Vaul Software",
+  "ogDescription": "Custom software engineering, proprietary products, and solutions for businesses.",
+  "ogImageAlt": "Vaul Software",
+  "hero": {
+    "heading": "We build software that businesses run on.",
+    "description": "Vaul Software designs and ships proprietary products and custom solutions, from the first line of code to production.",
+    "primaryCta": "Our services",
+    "secondaryCta": "See our work"
+  },
+  "servicesPreview": {
+    "heading": "Services",
+    "intro": "Custom software solutions for teams that need to move fast without cutting corners.",
+    "cta": "All services",
+    "items": [
+      {
+        "name": "Web Development",
+        "problem": "An outdated or slow web presence costs you customers and credibility.",
+        "description": "Fast, accessible websites and web applications built to be maintained, not rebuilt every year."
+      },
+      {
+        "name": "Business Automation",
+        "problem": "Manual, repetitive processes slow teams down and introduce errors.",
+        "description": "We replace manual workflows with reliable automated systems."
+      },
+      {
+        "name": "Custom Software Development",
+        "problem": "Off-the-shelf tools force your business to adapt to them, not the other way around.",
+        "description": "Software designed from the ground up around your specific requirements."
+      }
+    ],
+    "exploreLabel": "Explore services"
+  },
+  "productsPreview": {
+    "heading": "Products",
+    "intro": "Software products designed, built, and owned by Vaul Software.",
+    "cta": "All products",
+    "items": [
+      {
+        "name": "CourtRank",
+        "description": "A platform for managing padel club operations: reservations, players, and rankings. In production on web and iOS.",
+        "url": "https://getcourtrank.com/",
+        "linkLabel": "Visit CourtRank"
+      }
+    ]
+  },
+  "closing": {
+    "heading": "Have a project in mind?",
+    "description": "Tell us what you're trying to build and we'll figure out the right approach together.",
+    "cta": "Contact us"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Productos | Vaul Software",
+  "description": "Productos de software diseñados, construidos y operados por Vaul Software.",
+  "ogTitle": "Productos | Vaul Software",
+  "ogDescription": "Productos de software propios construidos por Vaul Software.",
+  "ogImageAlt": "Vaul Software — Productos",
+  "heading": "Productos que diseñamos, construimos y operamos.",
+  "intro": "Además del trabajo con clientes, Vaul Software construye y mantiene sus propios productos de software.",
+  "items": [
+    {
+      "name": "CourtRank",
+      "description": "Una plataforma para gestionar la operación de clubes de pádel: reservas, jugadores y rankings, disponible en web y móvil.",
+      "status": "En producción"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Our Work | Vaul Software",
+  "description": "Commercial software projects delivered by Vaul Software.",
+  "ogTitle": "Our Work | Vaul Software",
+  "ogDescription": "Software projects delivered by Vaul Software for clients.",
+  "ogImageAlt": "Vaul Software — Our Work",
+  "heading": "Software we've delivered for clients.",
+  "intro": "A selection of commercial projects built by Vaul Software, separate from the products we own and operate ourselves.",
+  "contextLabel": "The need",
+  "scopeLabel": "What we did",
+  "linkLabel": "Visit the live site",
+  "badge": "Client project",
+  "items": [
+    {
+      "name": "PlayZone VIP",
+      "context": "The client needed a web presence that represented the brand clearly, worked well on mobile, and could go live without becoming difficult to maintain.",
+      "scope": "Vaul handled frontend development, responsive design, and deployment end to end — built with Astro and TypeScript, shipped to production.",
+      "url": "https://www.playzonevip.com/"
+    }
+  ]
+}

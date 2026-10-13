@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import CTA from "../../components/CTA.astro";
+import Arrow from "../../components/Arrow.astro";
+import { locales, resolveLocale } from "../../lib/i18n";
+import { getContent } from "../../data/content";
+import ProductFeature from "../../components/ProductFeature.astro";
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const messages = {
+  title: `${t.products} | Vaul Software`,
+  description: t.productsIntro,
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">{t.products}</span>
+        <h1 class="display">{t.productsTitle}</h1>
+        <p class="intro">{t.productsIntro}</p>
+      </div>
+    </section>
+    <ProductFeature lang={lang} />
+    <section class="section">
+      <div class="wrap two-col">
+        <h2 class="heading">{t.productProblem}</h2>
+        <div>
+          <p class="intro">{t.productBody}</p>
+          <p class="intro mt-5">{t.productNote}</p>
+          <a
+            class="text-link mt-5"
+            href={`https://getcourtrank.com/${lang}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.productVisit}
+            <Arrow />
+          </a>
+        </div>
+      </div>
+    </section>
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>

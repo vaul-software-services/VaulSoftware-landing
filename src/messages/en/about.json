@@ -1,0 +1,17 @@
+{
+  "title": "About | Vaul Software",
+  "description": "Vaul Software is a software engineering studio focused on proprietary products and custom solutions for businesses.",
+  "ogTitle": "About | Vaul Software",
+  "ogDescription": "What Vaul Software does and how we work.",
+  "ogImageAlt": "Vaul Software — About",
+  "heading": "A software engineering studio, not an agency.",
+  "intro": "Vaul Software builds proprietary products and delivers custom software solutions for businesses. We work end to end: from understanding the problem to shipping and maintaining what we build.",
+  "approach": {
+    "heading": "How we work",
+    "items": [
+      { "title": "Understand first", "description": "We start with the actual problem, not a template solution." },
+      { "title": "Build what's needed", "description": "No unnecessary complexity, no premature abstractions." },
+      { "title": "Own the outcome", "description": "We stay involved through deployment and beyond." }
+    ]
+  }
+}

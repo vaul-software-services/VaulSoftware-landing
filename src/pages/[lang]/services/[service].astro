@@ -1,0 +1,125 @@
+---
+import { pricingCopy } from "../../../data/pricing";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import CTA from "../../../components/CTA.astro";
+import WorkFeature from "../../../components/WorkFeature.astro";
+import Process from "../../../components/Process.astro";
+import Arrow from "../../../components/Arrow.astro";
+import { locales, resolveLocale } from "../../../lib/i18n";
+import { getContent, services } from "../../../data/content";
+export function getStaticPaths() {
+  return locales.flatMap((lang) =>
+    services[lang].map((s) => ({ params: { lang, service: s.slug } })),
+  );
+}
+const lang = resolveLocale(Astro.params.lang);
+const t = getContent(lang);
+const s = services[lang].find((s) => s.slug === Astro.params.service)!;
+const messages = {
+  title: `${s.name} | Vaul Software`,
+  description: s.description,
+};
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: s.name,
+  description: s.description,
+  provider: {
+    "@type": "Organization",
+    name: "Vaul Software",
+    url: "https://vaulsoftware.com",
+  },
+};
+---
+
+<BaseLayout lang={lang} messages={messages}>
+  <Header lang={lang} />
+  <main id="main" tabindex="-1">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <section class="page-hero">
+      <div class="wrap">
+        <nav
+          class="breadcrumb"
+          aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}
+        >
+          <a href={`/${lang}/`}>{t.home}</a>
+          <span aria-hidden="true">/</span>
+          <a href={`/${lang}/services/`}>{t.services}</a>
+          <span aria-hidden="true">/</span>
+          <span>{s.name}</span>
+        </nav>
+        <span class="eyebrow">{s.name}</span>
+        <h1 class="display">{s.heading}</h1>
+        <p class="intro">{s.description}</p>
+        <a class="btn mt-8" href={`/${lang}/contact/?service=${s.slug}`}>
+          {t.start}
+          <Arrow />
+        </a>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap two-col">
+        <div>
+          <span class="eyebrow">{t.problem}</span>
+          <h2 class="heading">{s.name}</h2>
+          <p class="intro mt-6">{s.problem}</p>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold">{t.examples}</h2>
+          <ul class="list">
+            {s.examples.map((e) => (
+              <li>{e}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="section purpose">
+      <div class="wrap two-col">
+        <h2 class="heading">{t.benefits}</h2>
+        <ul class="list !mt-0">
+          {s.benefits.map((e) => (
+            <li>{e}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+    {s.slug === "web-development" && (
+      <section class="section">
+        <div class="wrap">
+          <span class="eyebrow">{t.workLabel}</span>
+          <h2 class="heading mb-10">{t.workHeading}</h2>
+          <WorkFeature lang={lang} />
+        </div>
+      </section>
+    )}
+    <Process lang={lang} />
+    <section class="section bg-white">
+      <div class="wrap">
+        <h2 class="heading text-center">{t.faq}</h2>
+        <div class="faq">
+          {s.faqs.map((f) => (
+            <details>
+              <summary>{f[0]}</summary>
+              <p>{f[1]}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap two-col">
+        <h2 class="heading">{pricingCopy[lang].heading}</h2>
+        <div>
+          <p class="intro">{pricingCopy[lang].intro}</p>
+          <a class="text-link mt-5" href={`/${lang}/pricing/`}>
+            {pricingCopy[lang].details}
+            <Arrow />
+          </a>
+        </div>
+      </div>
+    </section>
+    <CTA lang={lang} />
+  </main>
+</BaseLayout>

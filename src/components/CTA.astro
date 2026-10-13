@@ -1,0 +1,20 @@
+---
+import { getContent } from "../data/content";
+import type { Locale } from "../lib/i18n";
+import Arrow from "./Arrow.astro";
+const { lang } = Astro.props as { lang: Locale };
+const t = getContent(lang);
+---
+
+<section class="cta">
+  <div class="wrap cta-layout">
+    <div>
+      <h2 class="heading">{t.ctaHeading}</h2>
+      <p>{t.ctaDesc}</p>
+    </div>
+    <a class="btn" href={`/${lang}/contact/`}>
+      {t.talk}
+      <Arrow />
+    </a>
+  </div>
+</section>

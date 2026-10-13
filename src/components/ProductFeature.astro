@@ -1,0 +1,51 @@
+---
+import { products } from "../data/projects";
+import { getContent } from "../data/content";
+import type { Locale } from "../lib/i18n";
+import ProductScreens from "./ProductScreens.astro";
+import Arrow from "./Arrow.astro";
+const {
+  lang,
+  detail = false,
+  slug,
+} = Astro.props as { lang: Locale; detail?: boolean; slug?: string };
+const t = getContent(lang);
+---
+
+{products
+  .filter((product) => !slug || product.slug === slug)
+  .map((product) => (
+    <section class="product-feature">
+      <div class="wrap product-layout">
+        <div>
+          <span class="eyebrow">{t.productLabel}</span>
+          <h2 class="heading">{t.productHeading}</h2>
+          <p class="intro mt-5">{t.productIntro}</p>
+          <h3>
+            {product.name}
+            <span class="text-brand-light">.</span>
+          </h3>
+          <p class="intro">{product.content[lang].description}</p>
+          <div class="feature-tags">
+            {product.content[lang].features.map((f) => (
+              <span>{f}</span>
+            ))}
+          </div>
+          <a
+            class="text-link mt-6"
+            href={
+              detail
+                ? `${product.url}${lang}/`
+                : `/${lang}/products/${product.slug}/`
+            }
+            target={detail ? "_blank" : undefined}
+            rel={detail ? "noopener noreferrer" : undefined}
+          >
+            {detail ? t.live : product.name}
+            <Arrow />
+          </a>
+        </div>
+        <ProductScreens lang={lang} />
+      </div>
+    </section>
+  ))}

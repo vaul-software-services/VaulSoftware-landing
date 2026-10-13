@@ -1,0 +1,22 @@
+---
+interface Props {
+  url: string;
+  class?: string;
+}
+
+const { url, class: className = "" } = Astro.props;
+---
+
+<div class={`overflow-hidden rounded-xl border border-line bg-surface shadow-sm ${className}`}>
+  <div class="flex items-center gap-1.5 border-b border-line bg-paper px-4 py-2.5" aria-hidden="true">
+    <span class="size-2.5 rounded-full bg-line"></span>
+    <span class="size-2.5 rounded-full bg-line"></span>
+    <span class="size-2.5 rounded-full bg-line"></span>
+    <span class="ml-3 truncate rounded-md border border-line bg-surface px-3 py-1 text-xs text-slate">
+      {url}
+    </span>
+  </div>
+  <div class="aspect-[16/10]">
+    <slot />
+  </div>
+</div>

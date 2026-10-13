@@ -1,0 +1,31 @@
+---
+import StockPhoto from "./StockPhoto.astro";
+import { getContent } from "../data/content";
+import type { Locale } from "../lib/i18n";
+const { lang, illustrated = false } = Astro.props as {
+  lang: Locale;
+  illustrated?: boolean;
+};
+const t = getContent(lang);
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class:list={{ "two-col": illustrated, "items-center": illustrated }}>
+      <div>
+        <span class="eyebrow">{t.processLabel}</span>
+        <h2 class="heading max-w-2xl">{t.processHeading}</h2>
+      </div>
+      {illustrated && <StockPhoto lang={lang} image="design" compact />}
+    </div>
+    <ol class="steps">
+      {t.steps.map((step, i) => (
+        <li class="step">
+          <span class="step-number">0{i + 1}</span>
+          <h3>{step[0]}</h3>
+          <p>{step[1]}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

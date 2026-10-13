@@ -1,0 +1,28 @@
+{
+  "title": "Services | Vaul Software",
+  "description": "Web development, business automation, and custom software development delivered by Vaul Software.",
+  "ogTitle": "Services | Vaul Software",
+  "ogDescription": "Custom software solutions for businesses: web development, automation, and bespoke systems.",
+  "ogImageAlt": "Vaul Software — Services",
+  "heading": "Software solutions built for how your business works.",
+  "intro": "We work with businesses that need software built around their actual operations, not the other way around.",
+  "items": [
+    {
+      "name": "Web Development",
+      "description": "Websites and web applications built for performance, accessibility, and long-term maintainability."
+    },
+    {
+      "name": "Business Automation",
+      "description": "Replacing manual, repetitive processes with reliable automated systems."
+    },
+    {
+      "name": "Custom Software Development",
+      "description": "Software designed from the ground up around your specific requirements and constraints."
+    }
+  ],
+  "cta": {
+    "heading": "Not sure where to start?",
+    "description": "Tell us about the problem and we'll help you figure out the right scope.",
+    "label": "Contact us"
+  }
+}

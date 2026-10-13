@@ -1,0 +1,113 @@
+---
+import type { Locale } from "../lib/i18n";
+const { lang } = Astro.props as { lang: Locale };
+const labels =
+  lang === "es"
+    ? {
+        home: "CourtRank: inicio, clubes y acceso a reservas",
+        bookings: "CourtRank: listado de reservas del jugador",
+        caption: "Capturas reales de la app iOS, publicadas en App Store.",
+      }
+    : {
+        home: "CourtRank: home, clubs, and booking access",
+        bookings: "CourtRank: player booking list",
+        caption: "Real iOS app screenshots, published on App Store.",
+      };
+---
+
+<figure>
+  <div class="product-screens">
+    <div class="screen-phone screen-one">
+      <img
+        src="/images/courtrank-app-home.webp"
+        alt={labels.home}
+        width="314"
+        height="680"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="screen-phone screen-two">
+      <img
+        src="/images/courtrank-app-bookings.webp"
+        alt={labels.bookings}
+        width="314"
+        height="680"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+  <figcaption class="app-caption">
+    {labels.caption}{" "}
+    <a
+      href="https://apps.apple.com/us/app/courtrank-book-play-rank/id6761787842"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      App Store ↗
+    </a>
+  </figcaption>
+</figure>
+<style>
+  .product-screens {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 32px 28px 36px;
+    border: 1px solid #334155;
+    background: #172237;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .screen-phone {
+    width: min(45%, 210px);
+    min-width: 0;
+    flex-shrink: 1;
+    border: 7px solid #303039;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px #0003;
+  }
+  .screen-phone img {
+    width: 100%;
+    display: block;
+  }
+  .screen-two {
+    margin-top: 42px;
+  }
+  .app-caption {
+    font-size: 12px;
+    color: #a8b6cc;
+    margin-top: 14px;
+    line-height: 1.8;
+  }
+  .app-caption a {
+    white-space: nowrap;
+    color: #93c5fd;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  :global(.dark) .product-screens {
+    background: #1f1f24;
+    border-color: #3b3b43;
+  }
+  :global(.dark) .app-caption {
+    color: #a8a8b2;
+  }
+  @media (max-width: 767px) {
+    .product-screens {
+      gap: 18px;
+      padding: 22px 18px 28px;
+    }
+    .screen-phone {
+      width: 45%;
+      border-width: 5px;
+      border-radius: 21px;
+    }
+    .screen-two {
+      margin-top: 30px;
+    }
+  }
+</style>

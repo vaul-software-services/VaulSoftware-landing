@@ -1,0 +1,16 @@
+---
+import { formatPrice } from "../data/pricing";
+import type { Locale } from "../lib/i18n";
+const { cop, usd, lang } = Astro.props as {
+  cop: number;
+  usd: number;
+  lang: Locale;
+};
+---
+
+<span
+  data-price-cop={formatPrice(cop, "COP", lang)}
+  data-price-usd={formatPrice(usd, "USD", lang)}
+>
+  {formatPrice(cop, "COP", lang)}
+</span>

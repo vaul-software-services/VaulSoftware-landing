@@ -1,0 +1,54 @@
+{
+  "title": "Vaul Software — Ingeniería de software y productos a medida",
+  "description": "Vaul Software es un estudio de ingeniería de software que construye productos propios y soluciones de software a medida para empresas.",
+  "ogTitle": "Vaul Software",
+  "ogDescription": "Ingeniería de software a medida, productos propios y soluciones para empresas.",
+  "ogImageAlt": "Vaul Software",
+  "hero": {
+    "heading": "Construimos software del que las empresas dependen.",
+    "description": "Vaul Software diseña y entrega productos propios y soluciones a medida, desde la primera línea de código hasta producción.",
+    "primaryCta": "Nuestros servicios",
+    "secondaryCta": "Ver proyectos"
+  },
+  "servicesPreview": {
+    "heading": "Servicios",
+    "intro": "Soluciones de software a medida para equipos que necesitan avanzar rápido sin bajar la calidad.",
+    "cta": "Todos los servicios",
+    "items": [
+      {
+        "name": "Desarrollo web",
+        "problem": "Una presencia web lenta o desactualizada te cuesta clientes y credibilidad.",
+        "description": "Sitios y aplicaciones web rápidas y accesibles, construidas para mantenerse, no para rehacerse cada año."
+      },
+      {
+        "name": "Automatización de negocios",
+        "problem": "Los procesos manuales y repetitivos frenan a los equipos e introducen errores.",
+        "description": "Reemplazamos procesos manuales con sistemas automatizados confiables."
+      },
+      {
+        "name": "Desarrollo de software a medida",
+        "problem": "Las herramientas genéricas obligan a tu negocio a adaptarse a ellas, no al revés.",
+        "description": "Software diseñado desde cero según tus requerimientos específicos."
+      }
+    ],
+    "exploreLabel": "Explorar servicios"
+  },
+  "productsPreview": {
+    "heading": "Productos",
+    "intro": "Productos de software diseñados, construidos y operados por Vaul Software.",
+    "cta": "Todos los productos",
+    "items": [
+      {
+        "name": "CourtRank",
+        "description": "Una plataforma para gestionar la operación de clubes de pádel: reservas, jugadores y rankings. En producción en web e iOS.",
+        "url": "https://getcourtrank.com/",
+        "linkLabel": "Visitar CourtRank"
+      }
+    ]
+  },
+  "closing": {
+    "heading": "¿Tienes un proyecto en mente?",
+    "description": "Cuéntanos qué quieres construir y definimos juntos el mejor enfoque.",
+    "cta": "Contáctanos"
+  }
+}

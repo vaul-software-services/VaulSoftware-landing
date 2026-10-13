@@ -1,0 +1,17 @@
+{
+  "title": "Nosotros | Vaul Software",
+  "description": "Vaul Software es un estudio de ingeniería de software enfocado en productos propios y soluciones a medida para empresas.",
+  "ogTitle": "Nosotros | Vaul Software",
+  "ogDescription": "Qué hace Vaul Software y cómo trabajamos.",
+  "ogImageAlt": "Vaul Software — Nosotros",
+  "heading": "Un estudio de ingeniería de software, no una agencia.",
+  "intro": "Vaul Software construye productos propios y entrega soluciones de software a medida para empresas. Trabajamos de extremo a extremo: desde entender el problema hasta entregar y mantener lo que construimos.",
+  "approach": {
+    "heading": "Cómo trabajamos",
+    "items": [
+      { "title": "Primero entendemos", "description": "Partimos del problema real, no de una solución genérica." },
+      { "title": "Construimos lo necesario", "description": "Sin complejidad innecesaria ni abstracciones prematuras." },
+      { "title": "Nos hacemos responsables del resultado", "description": "Seguimos involucrados durante el despliegue y después de él." }
+    ]
+  }
+}

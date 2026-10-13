@@ -1,0 +1,111 @@
+---
+import type { Locale } from "../lib/i18n";
+interface Props {
+  lang: Locale;
+  image: "development" | "planning" | "design" | "workspace" | "writing";
+  compact?: boolean;
+}
+const { lang, image, compact = false } = Astro.props;
+const photos = {
+  design: {
+    author: "Kelly Sikkema",
+    url: "https://unsplash.com/photos/person-writing-on-white-paper-io0ZLYbu31s",
+    alt: {
+      en: "Hands sketching interface layouts on paper",
+      es: "Manos dibujando bocetos de interfaces en papel",
+    },
+  },
+  workspace: {
+    author: "Christopher Gower",
+    url: "https://unsplash.com/photos/a-macbook-with-lines-of-code-on-its-screen-on-a-busy-desk-m_HRfLhgABo",
+    alt: {
+      en: "Laptop displaying code on a desk beside a monitor",
+      es: "Computador portátil con código en pantalla sobre un escritorio junto a un monitor",
+    },
+  },
+  writing: {
+    author: "Mengkol Smile",
+    url: "https://unsplash.com/photos/hand-writing-in-a-notebook-on-a-white-desk-7MbJh7ge6y8",
+    alt: {
+      en: "Hand writing notes beside a laptop and phone",
+      es: "Una mano escribiendo notas junto a un computador y un teléfono",
+    },
+  },
+  development: {
+    author: "Dawit",
+    url: "https://unsplash.com/photos/laptop-displaying-code-on-a-desk-dTmj5aXbKp4",
+    alt: {
+      en: "Laptop displaying programming code in a workspace",
+      es: "Computador portátil con código de programación en un espacio de trabajo",
+    },
+  },
+  planning: {
+    author: "JESHOOTS.COM",
+    url: "https://unsplash.com/photos/an-open-empty-notebook-on-a-white-desk-next-to-an-iphone-and-a-macbook-pUAM5hPaCRI",
+    alt: {
+      en: "Notebook, pencil, and laptop arranged on a desk for planning",
+      es: "Cuaderno, lápiz y computador sobre un escritorio para planificar",
+    },
+  },
+};
+const photo = photos[image];
+---
+
+<figure class:list={["stock-photo", { compact }]}>
+  <img
+    src={`/images/stock/${image}-1600.webp`}
+    srcset={`/images/stock/${image}-800.webp 800w, /images/stock/${image}-1600.webp 1600w`}
+    sizes="(max-width:767px) calc(100vw - 40px), (max-width:1264px) 45vw, 555px"
+    alt={photo.alt[lang]}
+    width="1600"
+    height="1067"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>
+    {lang === "es" ? "Fotografía ilustrativa" : "Illustrative photograph"} ·{" "}
+    <a href={photo.url} target="_blank" rel="noopener noreferrer">
+      {photo.author} / Unsplash
+    </a>
+  </figcaption>
+</figure>
+<style>
+  .stock-photo {
+    margin: 0;
+    min-width: 0;
+  }
+  .stock-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .stock-photo.compact img {
+    aspect-ratio: 16/9;
+    max-height: 270px;
+    object-position: center 65%;
+  }
+  .stock-photo figcaption {
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .stock-photo a {
+    text-underline-offset: 3px;
+  }
+  .stock-photo a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 767px) {
+    .stock-photo img {
+      aspect-ratio: 4/3;
+    }
+    .stock-photo.compact img {
+      aspect-ratio: 16/10;
+    }
+  }
+</style>
