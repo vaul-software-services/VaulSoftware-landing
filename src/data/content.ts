@@ -157,7 +157,7 @@ export const copy = {
       ],
       [
         "Website analytics",
-        "Optional Cloudflare Web Analytics is enabled only when a beacon token is configured. The website does not install advertising trackers.",
+        "Google Analytics 4 is enabled on the production domain only when a measurement ID is configured. It measures visits and navigation and may use analytics cookies. Google signals and advertising personalization are disabled. Optional Cloudflare Web Analytics can also be configured.",
       ],
       [
         "External services",
@@ -349,7 +349,7 @@ export const copy = {
       ],
       [
         "Analítica del sitio",
-        "La analítica opcional de Cloudflare solo se activa si se configura un token. El sitio no instala rastreadores publicitarios.",
+        "Google Analytics 4 se activa en el dominio de producción solo cuando se configura un ID de medición. Mide visitas y navegación y puede usar cookies de analítica. Google signals y la personalización publicitaria están desactivados. La analítica opcional de Cloudflare también puede configurarse.",
       ],
       [
         "Servicios externos",

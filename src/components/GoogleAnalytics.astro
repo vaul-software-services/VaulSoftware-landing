@@ -1,0 +1,31 @@
+---
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim();
+const enabled =
+  import.meta.env.PROD && measurementId && /^G-[A-Z0-9]+$/.test(measurementId);
+---
+
+{enabled && <script is:inline define:vars={{ measurementId }}>
+  (() => {
+    // Keep local development and Pages previews out of production reports.
+    if (
+      !["vaulsoftware.com", "www.vaulsoftware.com"].includes(location.hostname)
+    )
+      return;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag("js", new Date());
+    window.gtag("config", measurementId, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      page_location: location.origin + location.pathname,
+    });
+    const tag = document.createElement("script");
+    tag.async = true;
+    tag.src =
+      "https://www.googletagmanager.com/gtag/js?id=" +
+      encodeURIComponent(measurementId);
+    document.head.append(tag);
+  })();
+</script>}

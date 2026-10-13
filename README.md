@@ -48,6 +48,7 @@ Copy `.env.example` to `.env` if configuration is needed:
 | Variable | Purpose |
 | --- | --- |
 | `PUBLIC_CONTACT_EMAIL` | Public enquiry mailbox; no secret value. |
+| `PUBLIC_GA_MEASUREMENT_ID` | Optional GA4 ID (`G-...`), enabled only on the live domain in production builds. |
 | `PUBLIC_CF_BEACON_TOKEN` | Optional Cloudflare Web Analytics. Unset means no analytics beacon. |
 
 The form does not store enquiry fields in local storage. Google Fonts supplies Inter; external links and optional Cloudflare analytics have separate privacy practices. The privacy page documents actual site behavior and clearly identifies the formal business policy as pending approval.
