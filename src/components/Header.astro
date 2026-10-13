@@ -430,6 +430,15 @@ const nav = [
     width: 44px;
     height: 44px;
     color: var(--ink);
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #menu-close:focus-visible {
+    outline: none;
+  }
+  .keyboard-navigation #menu-close:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 3px;
   }
   .mobile-dialog-content {
     display: flex;
@@ -623,9 +632,17 @@ const nav = [
         .catch(() => {});
     }
   }
-  toggle?.addEventListener("click", () =>
-    setMenu(toggle.getAttribute("aria-expanded") !== "true"),
+  toggle?.addEventListener("click", (event) => {
+    panel?.classList.toggle("keyboard-navigation", event.detail === 0);
+    setMenu(toggle.getAttribute("aria-expanded") !== "true");
+  });
+  panel?.addEventListener("pointerdown", () =>
+    panel.classList.remove("keyboard-navigation"),
   );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Tab" && panel?.open)
+      panel.classList.add("keyboard-navigation");
+  });
   document
     .querySelector("#menu-close")
     ?.addEventListener("click", () => setMenu(false, true));

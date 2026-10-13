@@ -144,15 +144,12 @@ const t = getContent(lang);
   </div>
 </form>
 <script>
+  import { readCurrencyCookie } from "../lib/currency.js";
   const form = document.querySelector<HTMLFormElement>("#project-form");
   const service = document.querySelector<HTMLSelectElement>("#service");
   const currencySelect = document.querySelector<HTMLSelectElement>("#currency");
   const currencyParam = new URLSearchParams(location.search).get("currency");
-  let savedCurrency: string | null = null;
-  try {
-    savedCurrency = localStorage.getItem("vaul-pricing-currency");
-  } catch {}
-  const currency = currencyParam ?? savedCurrency;
+  const currency = currencyParam ?? readCurrencyCookie(document.cookie);
   if (currencySelect && (currency === "USD" || currency === "COP"))
     currencySelect.value = currency;
   const requested = new URLSearchParams(location.search).get("service");

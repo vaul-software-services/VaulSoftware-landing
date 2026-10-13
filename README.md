@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-The static build goes to `dist/`. The existing Cloudflare Pages configuration and GitHub Actions check/build workflow are retained. No deployment, commit, or push is performed automatically. There is no configured lint command.
+The static build goes to `dist/`. Cloudflare Pages Functions choose COP/USD prices before serving the homepage, pricing page and contact form. Manual currency choices are saved in a preference cookie; the selector also submits a GET request when JavaScript is disabled. Local Astro development serves the static COP fallback; use Wrangler Pages development to exercise server selection. The existing Cloudflare Pages configuration and GitHub Actions check/build workflow are retained. No deployment, commit, or push is performed automatically. There is no configured lint command.
 
 ## Routes
 

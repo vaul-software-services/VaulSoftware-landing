@@ -1,19 +1,9 @@
 import type { PricingCurrency } from "../data/pricing";
-const storageKey = "vaul-pricing-currency";
-export const isCurrency = (value: unknown): value is PricingCurrency =>
-  value === "COP" || value === "USD";
-export function currencyForCountry(country: unknown): PricingCurrency {
-  return typeof country === "string" &&
-    /^[A-Z]{2}$/.test(country) &&
-    !["CO", "XX", "T1"].includes(country)
-    ? "USD"
-    : "COP";
-}
+import { currencyCookieName, isCurrency } from "./currency.js";
 export function initializePricingCurrency() {
   const selector =
     document.querySelector<HTMLSelectElement>("#pricing-currency");
   if (!selector) return;
-  let manuallySelected = false;
   const apply = (currency: PricingCurrency, announce = false) => {
     selector.value = currency;
     selector.dispatchEvent(new Event("select:sync"));
@@ -42,38 +32,14 @@ export function initializePricingCurrency() {
           ? `Precios actualizados a ${currency}`
           : `Prices updated to ${currency}`;
   };
+  selector
+    .closest("form")
+    ?.addEventListener("submit", (event) => event.preventDefault());
   selector.addEventListener("change", () => {
     if (!isCurrency(selector.value)) return;
-    manuallySelected = true;
-    try {
-      localStorage.setItem(storageKey, selector.value);
-    } catch {
-      /* Selection still works when storage is unavailable. */
-    }
+    document.cookie = `${currencyCookieName}=${selector.value}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
     apply(selector.value, true);
   });
-  let saved: string | null = null;
-  try {
-    saved = localStorage.getItem(storageKey);
-  } catch {
-    /* Use detection or the COP fallback. */
-  }
-  if (isCurrency(saved)) {
-    apply(saved);
-    return;
-  }
-  apply("COP");
-  // Astro's local/static preview has no Cloudflare request metadata.
-  if (["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) return;
-  fetch("/api/country", {
-    cache: "no-store",
-    signal: AbortSignal.timeout(3000),
-  })
-    .then((response) => (response.ok ? response.json() : null))
-    .then((data) => {
-      if (!manuallySelected) apply(currencyForCountry(data?.country));
-    })
-    .catch(() => {
-      /* Keep the usable COP prices on failure. */
-    });
+  // The edge already selected the initial currency in the HTML.
+  apply(isCurrency(selector.value) ? selector.value : "COP");
 }

@@ -30,7 +30,7 @@ const normalizedPath = Astro.url.pathname.endsWith("/")
   : `${Astro.url.pathname}/`;
 const canonical = new URL(normalizedPath, Astro.site);
 const ogImage = new URL(
-  messages.ogImage ?? (lang === "es" ? "/og-image-es.png" : "/og-image.png"),
+  messages.ogImage ?? "/og.png",
   Astro.site,
 );
 const englishPath = normalizedPath.replace(/^\/(en|es)(?=\/|$)/, "/en");

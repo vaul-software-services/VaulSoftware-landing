@@ -144,3 +144,12 @@ Replaced mailto-only submission with POST `/api/contact` and a server-side Resen
 Root redirect flash: `public/_redirects` declares `/ /en/ 302` for Cloudflare Pages, so the edge redirects before serving Astro's generated HTML redirect page. Rule is copied to dist by the static build. It targets only the root; locale pages and API Functions are unaffected. Requires redeployment to take effect on the live domain. Reference: https://developers.cloudflare.com/pages/configuration/redirects/
 
 GA4 integration: `GoogleAnalytics.astro` is included in the shared head and activates only with a valid PUBLIC_GA_MEASUREMENT_ID in a production build and on vaulsoftware.com/www. Local and Pages preview domains are excluded. Google signals and ad personalization are disabled, and page_location excludes query strings/fragments. Privacy copy updated. Check/build pass; configured-build output verified with a temporary test ID and default output restored without that ID. Real reporting remains pending the owner's GA4 measurement ID and redeployment.
+
+
+### Server-selected pricing currency
+
+Locale-specific Pages Functions for homepage, pricing and contact rewrite static HTML using Cloudflare HTMLRewriter. Precedence: explicit valid currency query, saved preference cookie, country (CO → COP, other valid country → USD), COP fallback. Prices, currency labels, selected options and plan-contact links are rewritten together. Personalized responses use private/no-store and remove ETags; conditional asset requests are cleared to avoid mismatched 304 variants. Explicit _routes.json limits Function execution to these pages and API routes, preserving the root _redirects rule and static asset delivery.
+
+The selector is a GET form with a noscript submit button. JavaScript enhances immediate switching and writes the same currency cookie, without fetching /api/country or resetting server-selected prices. Canonical/hreflang continue to use the query-free locale URL. Privacy wording now mentions the preference cookie. Seven unit tests plus check/build pass; direct Cloudflare runtime tests verified HTMLRewriter output for COP/USD without running client JavaScript. This supersedes the earlier client-country-fetch implementation. Deployment remains pending.
+
+Compiled Pages route tests in an isolated Cloudflare runtime also verified both locales and both currencies, homepage cookie preference, contact selection and private/no-store headers without client scripts. Browser verified USD on first render and immediate manual switch to COP.

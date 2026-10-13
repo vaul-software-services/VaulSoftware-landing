@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "include": [
+    "/api/*",
+    "/en",
+    "/es",
+    "/en/",
+    "/es/",
+    "/en/pricing",
+    "/es/pricing",
+    "/en/pricing/",
+    "/es/pricing/",
+    "/en/contact",
+    "/es/contact",
+    "/en/contact/",
+    "/es/contact/"
+  ],
+  "exclude": []
+}

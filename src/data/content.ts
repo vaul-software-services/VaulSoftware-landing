@@ -149,7 +149,7 @@ export const copy = {
     privacySections: [
       [
         "Price currency",
-        "We use the country estimated by Cloudflare from your IP address to choose COP or USD prices. Your manual currency choice is saved in your browser. The country endpoint does not return or store your IP address or precise location.",
+        "We use the country estimated by Cloudflare from your IP address to choose COP or USD prices. Your manual currency choice is saved in a preference cookie. Cloudflare selects the prices before sending the page; no precise location is stored by this feature.",
       ],
       [
         "Project enquiries",
@@ -341,7 +341,7 @@ export const copy = {
     privacySections: [
       [
         "Moneda de los precios",
-        "Usamos el país estimado por Cloudflare a partir de tu dirección IP para elegir precios en COP o USD. Tu elección manual de moneda se guarda en tu navegador. El endpoint de país no devuelve ni almacena tu dirección IP ni tu ubicación precisa.",
+        "Usamos el país estimado por Cloudflare a partir de tu dirección IP para elegir precios en COP o USD. Tu elección manual de moneda se guarda en una cookie de preferencias. Cloudflare selecciona los precios antes de enviar la página; esta función no almacena tu ubicación precisa.",
       ],
       [
         "Consultas sobre proyectos",

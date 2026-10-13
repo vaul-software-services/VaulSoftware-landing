@@ -3,9 +3,13 @@ import type { Locale } from "../lib/i18n";
 const { lang } = Astro.props as { lang: Locale };
 ---
 
-<div class="currency-selector">
+<form class="currency-selector" method="get">
   <label for="pricing-currency">{lang === "es" ? "Moneda" : "Currency"}</label>
-  <select id="pricing-currency" aria-describedby="currency-note">
+  <select
+    name="currency"
+    id="pricing-currency"
+    aria-describedby="currency-note"
+  >
     <option value="COP">
       COP · {lang === "es" ? "Pesos colombianos" : "Colombian pesos"}
     </option>
@@ -19,14 +23,12 @@ const { lang } = Astro.props as { lang: Locale };
       : "Fixed market prices. You can change the currency."}
   </p>
   <span class="sr-only" aria-live="polite" data-currency-announcement></span>
-</div>
-<noscript>
-  <p>
-    {lang === "es"
-      ? "Los precios se muestran en COP. Activa JavaScript para cambiar la moneda."
-      : "Prices are shown in COP. Enable JavaScript to change currency."}
-  </p>
-</noscript>
+  <noscript>
+    <button class="btn" type="submit">
+      {lang === "es" ? "Aplicar moneda" : "Apply currency"}
+    </button>
+  </noscript>
+</form>
 <script>
   import { initializePricingCurrency } from "../lib/pricing-currency";
   initializePricingCurrency();
