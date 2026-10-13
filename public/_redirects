@@ -1,0 +1,2 @@
+# Redirect at the Cloudflare edge, before Astro's static redirect page is served.
+/ /en/ 302
