@@ -1,9 +1,16 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vaulsoftware-website",
+  "name": "vaulsoftware-landing",
+  "main": "src/server/worker.js",
   "compatibility_date": "2026-01-01",
+  "vars": {
+    "CONTACT_FROM_EMAIL": "Vaul Software <contact@vaulsoftware.com>",
+    "CONTACT_TO_EMAIL": "contact@vaulsoftware.com"
+  },
   "assets": {
     "directory": "dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/en/", "/es/", "/en/pricing", "/en/pricing/", "/es/pricing", "/es/pricing/", "/en/contact", "/en/contact/", "/es/contact", "/es/contact/"],
     "not_found_handling": "404-page"
   }
 }

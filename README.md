@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-The static build goes to `dist/`. Cloudflare Pages Functions choose COP/USD prices before serving the homepage, pricing page and contact form. Manual currency choices are saved in a preference cookie; the selector also submits a GET request when JavaScript is disabled. Local Astro development serves the static COP fallback; use Wrangler Pages development to exercise server selection. The existing Cloudflare Pages configuration and GitHub Actions check/build workflow are retained. No deployment, commit, or push is performed automatically. There is no configured lint command.
+The static build goes to `dist/`. The Cloudflare Worker chooses COP/USD prices before serving the homepage, pricing page and contact form. Manual currency choices are saved in a preference cookie; the selector also submits a GET request when JavaScript is disabled. Local Astro development serves the static COP fallback; use `npx wrangler dev` to exercise server selection. The Cloudflare Workers configuration and GitHub Actions check/build workflow are retained. No deployment, commit, or push is performed automatically. There is no configured lint command.
 
 ## Routes
 
@@ -37,7 +37,7 @@ The header and footer share reusable components. Blue is reserved for branding a
 
 ## Contact
 
-The form posts enquiries to a Cloudflare Pages Function that sends through Resend. Real delivery requires private server configuration and a verified sending domain; see [contact activation](docs/CONTACT-SETUP.md). Errors preserve the entries and provide a copyable email fallback. Required fields have translated validation, and pricing links preselect plan, service and currency. Run mocked server tests with `node --test tests/contact.test.mjs`.
+The form posts enquiries to a Cloudflare Worker that sends through Resend. Real delivery requires private server configuration and a verified sending domain; see [contact activation](docs/CONTACT-SETUP.md). Errors preserve the entries and provide a copyable email fallback. Required fields have translated validation, and pricing links preselect plan, service and currency. Run mocked server tests with `node --test tests/contact.test.mjs`.
 
 `PUBLIC_CONTACT_EMAIL` defaults to the address already configured in the initial project, `contact@vaulsoftware.com`. Confirm mailbox ownership and delivery before release. No business WhatsApp number or official social profile has been invented.
 
