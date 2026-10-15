@@ -1,4 +1,5 @@
 ---
+import SocialLinks from "../../components/SocialLinks.astro";
 import StockPhoto from "../../components/StockPhoto.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
@@ -34,6 +35,7 @@ const messages = {
             <h2>{t.contactNextTitle}</h2>
             <p>{t.contactNext}</p>
           </div>
+          <SocialLinks lang={lang} heading />
           <div class="mt-8">
             <StockPhoto lang={lang} image="writing" compact />
           </div>

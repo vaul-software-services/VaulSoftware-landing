@@ -3,6 +3,7 @@ import { pricingCopy } from "../data/pricing";
 import { products } from "../data/projects";
 import type { Locale } from "../lib/i18n";
 import { getContent, services } from "../data/content";
+import SocialLinks from "./SocialLinks.astro";
 import Logo from "./Logo.astro";
 import { contactEmail } from "../lib/site";
 const { lang } = Astro.props as { lang: Locale };
@@ -24,6 +25,7 @@ const t = getContent(lang);
           {t.heroA} {t.heroB}
         </p>
         <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        <SocialLinks lang={lang} />
       </div>
       <nav aria-label={t.companyGroup}>
         <h2>{t.companyGroup}</h2>
