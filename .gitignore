@@ -29,3 +29,5 @@ pnpm-debug.log*
 # Private local Cloudflare secrets
 .dev.vars
 .dev.vars.*
+
+.indexnow-state.json

@@ -64,3 +64,21 @@ Images are real live-site captures or public CourtRank App Store screenshots. Th
 The typographic wordmark and V favicon/touch icon are provisional. Approved vector brand artwork is still required.
 
 See [implementation report](docs/IMPLEMENTATION.md) for the file inventory, validation, evidence, and remaining business decisions.
+
+## Search notifications
+
+
+The `Notify search engines of content changes` GitHub workflow checks the production
+sitemaps every six hours, after pushes to main, and on manual dispatch. It submits
+only new URLs or pages whose title/main text changed to IndexNow. The ownership text file in `public/`
+must be deployed before submissions can succeed; it is intentionally public and is
+not a private API credential.
+
+The workflow caches content fingerprints, preserving them only after accepted
+submissions. If the cache is evicted, the next run sends a fresh baseline. It skips
+redirects, stops on fetch errors, and does not infer deletions from missing sitemap
+entries. IndexNow acceptance does not guarantee indexing and does not notify Google.
+
+Validate without sending or saving state: `node scripts/indexnow.mjs --dry-run`.
+Run regression checks: `node --test scripts/indexnow.test.mjs`.
+
