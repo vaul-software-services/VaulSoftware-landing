@@ -23,7 +23,7 @@ The static build goes to `dist/`. The Cloudflare Worker chooses COP/USD prices b
 
 ## Routes
 
-Both locales include home, services, products, work, about, contact, pricing, and privacy information. Detail pages cover web development, business automation, custom software, CourtRank, and PlayZone VIP. The language switcher preserves equivalent pages and contact plan/service parameters.
+Both locales include home, services, products, work, about, contact, pricing, and privacy information. Detail pages cover web development, business automation, custom software, CourtRank, Sweet Match Bakery, and PlayZone VIP. The language switcher preserves equivalent pages and contact plan/service parameters.
 
 ## Editing content
 

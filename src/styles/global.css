@@ -395,6 +395,9 @@
     font-weight: 600;
     letter-spacing: -0.04em;
   }
+  .work-layout + .work-layout {
+    margin-top: 96px;
+  }
   .work-layout .intro {
     font-size: 16px;
     margin-top: 18px;
