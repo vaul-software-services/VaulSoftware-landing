@@ -6,7 +6,6 @@ import { getContent } from "../data/content";
 import Logo from "./Logo.astro";
 const { lang } = Astro.props as { lang: Locale };
 const t = getContent(lang);
-const other = lang === "en" ? "es" : "en";
 const current = Astro.url.pathname.replace(/\/$/, "");
 const suffix = current.replace(/^\/(en|es)\/?/, "");
 const known = [
@@ -18,8 +17,8 @@ const known = [
   ...products.map((p) => `products/${p.slug}`),
   "privacy",
 ];
-const switchPath =
-  `/${other}/${known.some((route) => route === suffix) ? suffix + "/" : ""}`.replace(
+const languagePath = (locale: Locale) =>
+  `/${locale}/${known.includes(suffix) ? suffix + "/" : ""}`.replace(
     /\/+/g,
     "/",
   );
@@ -115,17 +114,32 @@ const nav = [
           />
         </svg>
       </button>
-      <a
-        class="language"
-        href={switchPath}
-        lang={other}
-        hreflang={other}
-        aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
-      >
-        {lang.toUpperCase()}
-        <span aria-hidden="true"> / </span>
-        <span class="text-slate">{other.toUpperCase()}</span>
-      </a>
+      <details class="language-menu">
+        <summary
+          class="language"
+          aria-label={lang === "es" ? "Cambiar idioma" : "Change language"}
+        >
+          {lang.toUpperCase()}
+        </summary>
+        <div class="language-options">
+          {(
+            [
+              ["en", "English"],
+              ["es", "Español"],
+            ] as const
+          ).map(([locale, label]) => (
+            <a
+              class="language-option"
+              href={languagePath(locale)}
+              lang={locale}
+              hreflang={locale}
+              aria-current={lang === locale ? "page" : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </details>
       <a class="btn header-cta" href={`/${lang}/contact/`}>
         {t.talk}
         <span aria-hidden="true">↗</span>
@@ -376,14 +390,65 @@ const nav = [
     align-items: center;
     gap: 14px;
   }
+  .language-menu {
+    position: relative;
+    flex-shrink: 0;
+    user-select: none;
+  }
   .language {
-    font-size: 12px;
-    font-weight: 600;
-    min-height: 44px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      background 0.2s,
+      color 0.2s;
   }
+  .language::-webkit-details-marker {
+    display: none;
+  }
+  .language::marker {
+    content: "";
+  }
+  .language:hover,
+  .language-menu[open] .language {
+    background: var(--soft);
+    color: var(--ink);
+  }
+  .language-options {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 12px;
+    z-index: 50;
+    min-width: 144px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 10px 28px rgb(0 0 0 / 0.12);
+  }
+  .language-option {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    transition: background 0.2s;
+  }
+  .language-option:hover,
+  .language-option:focus-visible {
+    background: var(--soft);
+  }
+
   .header-cta {
     min-height: 44px;
     padding: 11px 18px;
@@ -515,16 +580,30 @@ const nav = [
 <script>
   // Static pages cannot read query strings at build time. Keep enquiry selections
   // when switching locales by updating the link from the current browser URL.
-  const languageLink = document.querySelector<HTMLAnchorElement>(".language");
-  if (languageLink) {
-    const params = new URLSearchParams(location.search);
-    const target = new URL(languageLink.href, location.href);
-    for (const key of ["plan", "service", "currency"]) {
-      const value = params.get(key);
-      if (value) target.searchParams.set(key, value);
+  const languageMenu =
+    document.querySelector<HTMLDetailsElement>(".language-menu");
+  document
+    .querySelectorAll<HTMLAnchorElement>(".language-option")
+    .forEach((link) => {
+      const params = new URLSearchParams(location.search);
+      const target = new URL(link.href, location.href);
+      for (const key of ["plan", "service", "currency"]) {
+        const value = params.get(key);
+        if (value) target.searchParams.set(key, value);
+      }
+      link.href = target.pathname + target.search;
+    });
+  document.addEventListener("pointerdown", (event) => {
+    if (languageMenu && !languageMenu.contains(event.target as Node))
+      languageMenu.open = false;
+  });
+  languageMenu?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      languageMenu.open = false;
+      languageMenu.querySelector("summary")?.focus();
+      event.stopPropagation();
     }
-    languageLink.href = target.pathname + target.search;
-  }
+  });
 
   const themeToggle =
     document.querySelector<HTMLButtonElement>("#theme-toggle");
@@ -604,6 +683,7 @@ const nav = [
       header?.classList.add("is-scrolled");
       closing = false;
       menuAnimation?.cancel();
+      if (languageMenu) languageMenu.open = false;
       panel.showModal();
       menuAnimation = panel.animate(
         [{ transform: "translateY(-100%)" }, { transform: "translateY(0)" }],
