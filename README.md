@@ -37,7 +37,7 @@ The header and footer share reusable components. Blue is reserved for branding a
 
 ## Contact
 
-The form posts enquiries to a Cloudflare Worker that sends through Resend. Real delivery requires private server configuration and a verified sending domain; see [contact activation](docs/CONTACT-SETUP.md). Errors preserve the entries and provide a copyable email fallback. Required fields have translated validation, and pricing links preselect plan, service and currency. Run mocked server tests with `node --test tests/contact.test.mjs`.
+The form posts enquiries to a Cloudflare Worker that sends through Resend. Real delivery requires private server configuration and a verified sending domain; see [contact activation](docs/CONTACT-SETUP.md). Errors preserve the entries and provide a copyable email fallback. Required fields have translated validation, and pricing links preselect plan, service and currency. Run mocked server tests with `node --test tests/contact.test.mjs`, or the whole suite with `npm test`.
 
 `PUBLIC_CONTACT_EMAIL` defaults to the address already configured in the initial project, `contact@vaulsoftware.com`. Confirm mailbox ownership and delivery before release. No business WhatsApp number or official social profile has been invented.
 
@@ -55,7 +55,23 @@ The form does not store enquiry fields in local storage. Google Fonts supplies I
 
 ## SEO, assets, and accessibility
 
-Every indexable page has translated titles/descriptions, canonical URLs, hreflang, Open Graph/Twitter metadata, and language attributes. The sitemap includes English/Spanish alternates. Organization and service structured data contain only supported fields. Error pages are noindex.
+Every indexable page has translated titles/descriptions, canonical URLs, hreflang (`en`, `es`, `x-default`), Open Graph/Twitter metadata, and language attributes. Indexable pages send `max-image-preview:large` so Google may show full-size previews. Error pages are noindex and emit no canonical or structured data.
+
+Structured data lives in `src/lib/schema.ts`. Each page emits a single `@graph` so the shared `Organization`, `WebSite`, `ImageObject` (logo), and `Person` (founder) nodes are declared once and referenced by `@id` instead of repeated. Pages layer their own node on top through the `schema` prop on `BaseLayout`, with `breadcrumbs` and `mainEntityId` as separate props:
+
+| Page | Added nodes |
+| --- | --- |
+| Home | `ItemList` of services |
+| Services index, work, products | `CollectionPage` + `ItemList` |
+| Service detail | `Service` + `FAQPage` (5 questions each) |
+| Pricing | `FAQPage` (8 questions) |
+| Case study | `CreativeWork` linked to the live client site |
+| CourtRank | `SoftwareApplication` |
+| About, contact | `AboutPage` / `ContactPage` |
+
+Only values that exist in this repository are published: no invented address, rating, review, price, founding date, or employee count. The country (`CO`) is derived from the already-published `+57` WhatsApp number and the default COP pricing; `src/lib/site.ts` is the single source for contact details.
+
+The sitemap includes English/Spanish/x-default alternates and a crawl priority per route. `npm test` runs the whole suite; `tests/seo.test.mjs` validates the built `dist/` output — self-canonicals, the complete hreflang set, one valid JSON-LD graph per page with no dangling `@id` reference, breadcrumb ordering, FAQ completeness, declared Open Graph dimensions against the actual file, and sitemap coverage. It requires a build first (`npm run test:seo` does both).
 
 The site provides a skip link, semantic landmarks, visible focus, native FAQ disclosures, translated labels, and an Escape-enabled mobile menu. Reduced-motion preferences are respected. The comparison table scrolls within its own keyboard-focusable region on phones.
 

@@ -7,6 +7,7 @@ import Arrow from "../../../components/Arrow.astro";
 import { locales, resolveLocale } from "../../../lib/i18n";
 import { getContent } from "../../../data/content";
 import { products } from "../../../data/projects";
+import { softwareApplicationNode } from "../../../lib/schema";
 export function getStaticPaths() {
   return locales.flatMap((lang) =>
     products.map((product) => ({
@@ -23,9 +24,29 @@ const messages = {
   title: `${product.name} | ${t.products} | Vaul Software`,
   description: c.description,
 };
+const canonical = `https://vaulsoftware.com/${lang}/products/${product.slug}/`;
+const breadcrumbs = [
+  { name: t.home, path: `/${lang}/` },
+  { name: t.products, path: `/${lang}/products/` },
+  { name: product.name, path: `/${lang}/products/${product.slug}/` },
+];
+const schema = [
+  softwareApplicationNode(canonical, lang, {
+    name: product.name,
+    url: product.url,
+    image: product.image,
+    description: c.description,
+  }),
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout
+  lang={lang}
+  messages={messages}
+  breadcrumbs={breadcrumbs}
+  mainEntityId={`${canonical}#application`}
+  schema={schema}
+>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="page-hero">

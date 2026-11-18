@@ -12,11 +12,15 @@ const lang = resolveLocale(Astro.params.lang);
 const t = getContent(lang);
 const messages = {
   title: `${t.privacyTitle} | Vaul Software`,
-  description: t.privacyIntro,
+  description: t.privacyDescription,
 };
+const breadcrumbs = [
+  { name: t.home, path: `/${lang}/` },
+  { name: t.privacyTitle, path: `/${lang}/privacy/` },
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout lang={lang} messages={messages} breadcrumbs={breadcrumbs}>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="page-hero">

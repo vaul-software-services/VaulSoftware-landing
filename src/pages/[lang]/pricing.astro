@@ -14,15 +14,29 @@ import {
   pricingFeatures,
   planContactPath,
 } from "../../data/pricing";
+import { getContent } from "../../data/content";
+import { faqNode } from "../../lib/schema";
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
 }
 const lang = resolveLocale(Astro.params.lang);
 const t = pricingCopy[lang];
+const nav = getContent(lang);
 const messages = { title: t.title, description: t.description };
+const canonical = `https://vaulsoftware.com/${lang}/pricing/`;
+const breadcrumbs = [
+  { name: nav.home, path: `/${lang}/` },
+  { name: t.nav, path: `/${lang}/pricing/` },
+];
+const schema = [faqNode(canonical, t.faq)];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout
+  lang={lang}
+  messages={messages}
+  breadcrumbs={breadcrumbs}
+  schema={schema}
+>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="page-hero">

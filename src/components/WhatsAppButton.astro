@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "../lib/i18n";
+import { whatsappNumber } from "../lib/site";
 const { lang } = Astro.props as { lang: Locale };
 const label =
   lang === "es" ? "Escríbenos por WhatsApp" : "Message us on WhatsApp";
@@ -7,7 +8,7 @@ const message =
   lang === "es"
     ? "Hola, me interesa hablar sobre un proyecto con Vaul Software."
     : "Hi, I would like to discuss a project with Vaul Software.";
-const url = `https://wa.me/573134874660?text=${encodeURIComponent(message)}`;
+const url = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 ---
 
 <a

@@ -6,6 +6,7 @@ import CTA from "../../components/CTA.astro";
 import Arrow from "../../components/Arrow.astro";
 import { locales, resolveLocale } from "../../lib/i18n";
 import { getContent } from "../../data/content";
+import { FOUNDER_ID } from "../../lib/schema";
 
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
@@ -16,9 +17,19 @@ const messages = {
   title: `${t.about} | Vaul Software`,
   description: t.aboutIntro,
 };
+const breadcrumbs = [
+  { name: t.home, path: `/${lang}/` },
+  { name: t.about, path: `/${lang}/about/` },
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout
+  lang={lang}
+  messages={messages}
+  pageType="AboutPage"
+  breadcrumbs={breadcrumbs}
+  mainEntityId={FOUNDER_ID}
+>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="page-hero">

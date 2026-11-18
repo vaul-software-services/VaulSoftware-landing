@@ -12,6 +12,7 @@ import Process from "../../components/Process.astro";
 import CTA from "../../components/CTA.astro";
 import { locales, resolveLocale } from "../../lib/i18n";
 import { getContent, services } from "../../data/content";
+import { itemListNode } from "../../lib/schema";
 export function getStaticPaths() {
   return locales.map((lang) => ({ params: { lang } }));
 }
@@ -24,9 +25,21 @@ const messages = {
       : "Vaul Software | Web development & custom software",
   description: t.heroDesc,
 };
+const canonical = `https://vaulsoftware.com/${lang}/`;
+const schema = [
+  itemListNode(
+    canonical,
+    t.servicesTitle,
+    services[lang].map((s) => ({
+      name: s.name,
+      description: s.description,
+      path: `/${lang}/services/${s.slug}/`,
+    })),
+  ),
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout lang={lang} messages={messages} schema={schema}>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="hero">

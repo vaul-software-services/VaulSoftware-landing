@@ -146,6 +146,10 @@ export const copy = {
     privacyLink: "Privacy information",
     privacyTitle: "Privacy information",
     privacyIntro: "How this website handles information.",
+    // Separate from the visible intro so the meta description can describe the
+    // page's full contents without lengthening the on-page subtitle.
+    privacyDescription:
+      "How vaulsoftware.com handles your information: price currency detection, contact form enquiries, website analytics, and the external services the site connects to.",
     privacySections: [
       [
         "Price currency",
@@ -338,6 +342,8 @@ export const copy = {
     privacyLink: "Información de privacidad",
     privacyTitle: "Información de privacidad",
     privacyIntro: "Cómo maneja la información este sitio web.",
+    privacyDescription:
+      "Cómo maneja vaulsoftware.com tu información: detección de la moneda de los precios, consultas del formulario de contacto, analítica del sitio y servicios externos con los que se conecta.",
     privacySections: [
       [
         "Moneda de los precios",

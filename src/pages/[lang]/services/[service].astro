@@ -8,6 +8,7 @@ import Process from "../../../components/Process.astro";
 import Arrow from "../../../components/Arrow.astro";
 import { locales, resolveLocale } from "../../../lib/i18n";
 import { getContent, services } from "../../../data/content";
+import { faqNode, serviceNode } from "../../../lib/schema";
 export function getStaticPaths() {
   return locales.flatMap((lang) =>
     services[lang].map((s) => ({ params: { lang, service: s.slug } })),
@@ -20,23 +21,27 @@ const messages = {
   title: `${s.name} | Vaul Software`,
   description: s.description,
 };
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  name: s.name,
-  description: s.description,
-  provider: {
-    "@type": "Organization",
-    name: "Vaul Software",
-    url: "https://vaulsoftware.com",
-  },
-};
+const canonical = `https://vaulsoftware.com/${lang}/services/${s.slug}/`;
+const breadcrumbs = [
+  { name: t.home, path: `/${lang}/` },
+  { name: t.services, path: `/${lang}/services/` },
+  { name: s.name, path: `/${lang}/services/${s.slug}/` },
+];
+const schema = [
+  serviceNode(canonical, lang, s),
+  faqNode(canonical, s.faqs),
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout
+  lang={lang}
+  messages={messages}
+  breadcrumbs={breadcrumbs}
+  mainEntityId={`${canonical}#service`}
+  schema={schema}
+>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     <section class="page-hero">
       <div class="wrap">
         <nav

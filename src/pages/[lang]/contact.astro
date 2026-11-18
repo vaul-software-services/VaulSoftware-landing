@@ -16,9 +16,18 @@ const messages = {
   title: `${t.contact} | Vaul Software`,
   description: t.contactIntro,
 };
+const breadcrumbs = [
+  { name: t.home, path: `/${lang}/` },
+  { name: t.contact, path: `/${lang}/contact/` },
+];
 ---
 
-<BaseLayout lang={lang} messages={messages}>
+<BaseLayout
+  lang={lang}
+  messages={messages}
+  pageType="ContactPage"
+  breadcrumbs={breadcrumbs}
+>
   <Header lang={lang} />
   <main id="main" tabindex="-1">
     <section class="section">
