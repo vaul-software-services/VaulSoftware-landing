@@ -69,7 +69,6 @@ export function organizationNode(lang: Locale): JsonLdNode {
         email: contactEmail,
         telephone: whatsappNumber,
         availableLanguage: ["en", "es"],
-        areaServed: addressCountry,
       },
     ],
   };
@@ -207,7 +206,6 @@ export function serviceNode(
     serviceType: service.name,
     inLanguage: lang,
     provider: { "@id": ORGANIZATION_ID },
-    areaServed: { "@type": "Country", name: addressCountry },
     url: canonical,
     mainEntityOfPage: { "@id": `${canonical}#webpage` },
     hasOfferCatalog: {

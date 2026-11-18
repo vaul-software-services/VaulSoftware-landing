@@ -1,3 +1,6 @@
 ---
-return Astro.redirect("/en/", 302);
+// Static builds cannot emit an HTTP status, so Astro writes a meta-refresh page
+// here and this code is advisory. The redirect that actually runs is the 301 in
+// public/_redirects, served by Cloudflare before this file is ever reached.
+return Astro.redirect("/en/", 301);
 ---
