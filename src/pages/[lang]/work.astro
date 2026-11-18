@@ -13,7 +13,7 @@ export function getStaticPaths() {
 const lang = resolveLocale(Astro.params.lang);
 const t = getContent(lang);
 const messages = {
-  title: `${t.work} | Vaul Software`,
+  title: `${t.workMetaTitle} | Vaul Software`,
   description: t.workPageIntro,
 };
 const canonical = `https://vaulsoftware.com/${lang}/work/`;

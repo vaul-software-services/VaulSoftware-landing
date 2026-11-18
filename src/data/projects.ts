@@ -6,12 +6,14 @@ export const projects = [
   {
     slug: "sweet-match-bakery",
     name: "Sweet Match Bakery",
+    service: "custom-software",
     url: "https://sweetmatchbakery.com/",
     image: "/images/sweet-match-bakery.webp",
     technologies: ["Astro", "TypeScript", "React", "Supabase"],
     gallery: [],
     content: {
       en: {
+        metaTitle: "Sweet Match Bakery: an online bakery store",
         summary: "An online storefront for an artisan bakery in Cajicá and Chía, with a product catalog, custom cake requests, and order tracking.",
         category: "E-commerce · Artisan bakery",
         caption: "The Sweet Match Bakery online storefront",
@@ -21,6 +23,7 @@ export const projects = [
         outcome: "Customers can explore the bakery’s products, prepare a custom cake request, and follow their orders through one website.",
       },
       es: {
+        metaTitle: "Sweet Match Bakery: tienda de repostería",
         summary: "Una tienda en línea para una repostería artesanal de Cajicá y Chía, con catálogo de productos, solicitudes de tortas personalizadas y seguimiento de pedidos.",
         category: "Comercio electrónico · Repostería artesanal",
         caption: "La tienda en línea de Sweet Match Bakery",
@@ -34,6 +37,7 @@ export const projects = [
   {
     slug: "playzone-vip",
     name: "PlayZone VIP",
+    service: "web-development",
     url: "https://www.playzonevip.com/",
     image: "/images/playzone-vip.webp",
     technologies: ["Astro", "TypeScript"],
@@ -49,6 +53,7 @@ export const projects = [
     ],
     content: {
       en: {
+        metaTitle: "PlayZone VIP: a sports venue website",
         summary: copy.en.workSummary,
         category: copy.en.workCategory,
         caption: copy.en.workCaption,
@@ -58,6 +63,7 @@ export const projects = [
         outcome: copy.en.projectOutcome,
       },
       es: {
+        metaTitle: "PlayZone VIP: web de centro deportivo",
         summary: copy.es.workSummary,
         category: copy.es.workCategory,
         caption: copy.es.workCaption,
@@ -78,6 +84,7 @@ export const products = [
     image: "/images/courtrank-site.webp",
     content: {
       en: {
+        metaTitle: "CourtRank: padel club booking software",
         description: copy.en.productDesc,
         problem: copy.en.productProblem,
         body: copy.en.productBody,
@@ -85,6 +92,7 @@ export const products = [
         caption: copy.en.productCaption,
       },
       es: {
+        metaTitle: "CourtRank: software de reservas para clubes",
         description: copy.es.productDesc,
         problem: copy.es.productProblem,
         body: copy.es.productBody,

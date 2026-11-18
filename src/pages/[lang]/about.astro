@@ -14,7 +14,7 @@ export function getStaticPaths() {
 const lang = resolveLocale(Astro.params.lang);
 const t = getContent(lang);
 const messages = {
-  title: `${t.about} | Vaul Software`,
+  title: `${t.aboutMetaTitle} | Vaul Software`,
   description: t.aboutIntro,
 };
 const breadcrumbs = [

@@ -5,7 +5,7 @@ import CTA from "../../../components/CTA.astro";
 import ProjectMedia from "../../../components/ProjectMedia.astro";
 import Arrow from "../../../components/Arrow.astro";
 import { locales, resolveLocale } from "../../../lib/i18n";
-import { getContent } from "../../../data/content";
+import { getContent, services } from "../../../data/content";
 import { projects } from "../../../data/projects";
 import { caseStudyNode } from "../../../lib/schema";
 export function getStaticPaths() {
@@ -21,7 +21,7 @@ const t = getContent(lang);
 const { project } = Astro.props;
 const c = project.content[lang];
 const messages = {
-  title: `${project.name} | ${t.work} | Vaul Software`,
+  title: `${c.metaTitle} | Vaul Software`,
   description: c.summary,
 };
 const canonical = `https://vaulsoftware.com/${lang}/work/${project.slug}/`;
@@ -30,6 +30,7 @@ const breadcrumbs = [
   { name: t.work, path: `/${lang}/work/` },
   { name: project.name, path: `/${lang}/work/${project.slug}/` },
 ];
+const service = services[lang].find((entry) => entry.slug === project.service)!;
 const schema = [
   caseStudyNode(canonical, lang, {
     name: project.name,
@@ -81,6 +82,13 @@ const schema = [
           {t.live}
           <Arrow />
         </a>
+        <p class="intro mt-6">
+          {t.relatedService}:{" "}
+          <a class="text-link" href={`/${lang}/services/${service.slug}/`}>
+            {service.name}
+            <Arrow />
+          </a>
+        </p>
       </div>
     </section>
     <section class="section">

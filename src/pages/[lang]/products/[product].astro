@@ -21,7 +21,7 @@ const t = getContent(lang);
 const { product } = Astro.props;
 const c = product.content[lang];
 const messages = {
-  title: `${product.name} | ${t.products} | Vaul Software`,
+  title: `${c.metaTitle} | Vaul Software`,
   description: c.description,
 };
 const canonical = `https://vaulsoftware.com/${lang}/products/${product.slug}/`;

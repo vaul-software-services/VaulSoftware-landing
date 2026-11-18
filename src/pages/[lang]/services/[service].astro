@@ -18,7 +18,7 @@ const lang = resolveLocale(Astro.params.lang);
 const t = getContent(lang);
 const s = services[lang].find((s) => s.slug === Astro.params.service)!;
 const messages = {
-  title: `${s.name} | Vaul Software`,
+  title: `${s.metaTitle} | Vaul Software`,
   description: s.description,
 };
 const canonical = `https://vaulsoftware.com/${lang}/services/${s.slug}/`;
@@ -67,7 +67,7 @@ const schema = [
       <div class="wrap two-col">
         <div>
           <span class="eyebrow">{t.problem}</span>
-          <h2 class="heading">{s.name}</h2>
+          <h2 class="heading">{s.problemHeading}</h2>
           <p class="intro mt-6">{s.problem}</p>
         </div>
         <div>

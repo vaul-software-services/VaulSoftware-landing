@@ -13,7 +13,7 @@ export function getStaticPaths() {
 const lang = resolveLocale(Astro.params.lang);
 const t = getContent(lang);
 const messages = {
-  title: `${t.contact} | Vaul Software`,
+  title: `${t.contactMetaTitle} | Vaul Software`,
   description: t.contactIntro,
 };
 const breadcrumbs = [

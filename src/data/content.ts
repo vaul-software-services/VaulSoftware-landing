@@ -15,6 +15,12 @@ export const copy = {
     servicesDesc:
       "A stronger online presence. A smoother operation. Software that fits your business. We start with what you need.",
     allServices: "All services",
+    servicesMetaTitle: "Web, automation & custom software",
+    productsMetaTitle: "CourtRank and our own software products",
+    workMetaTitle: "Case studies: websites and custom software",
+    aboutMetaTitle: "Independent software engineering",
+    contactMetaTitle: "Start a software project",
+    relatedService: "The service behind this project",
     productLabel: "02 / Our products",
     productHeading: "Products we believe in.",
     productIntro:
@@ -204,6 +210,12 @@ export const copy = {
     servicesDesc:
       "Una mejor presencia digital. Una operación más sencilla. Software que se adapta a tu negocio. Empezamos por lo que necesitas.",
     allServices: "Todos los servicios",
+    servicesMetaTitle: "Desarrollo web, automatización y software",
+    productsMetaTitle: "CourtRank y nuestros productos de software",
+    workMetaTitle: "Casos de estudio: sitios web y software",
+    aboutMetaTitle: "Ingeniería de software independiente",
+    contactMetaTitle: "Empieza un proyecto de software",
+    relatedService: "El servicio detrás de este proyecto",
     productLabel: "02 / Nuestros productos",
     productHeading: "Productos que construimos.",
     productIntro:
@@ -390,6 +402,8 @@ export const services = {
       slug: "web-development",
       name: "Web development",
       heading: "Websites built to make an impression.",
+      metaTitle: "Web development for business websites",
+      problemHeading: "When your website gets in the way.",
       description:
         "Modern, fast, responsive websites that give your business a clear digital presence.",
       problem:
@@ -434,6 +448,8 @@ export const services = {
       slug: "business-automation",
       name: "Business automation",
       heading: "Less repetitive work. More time for your business.",
+      metaTitle: "Business automation for repetitive work",
+      problemHeading: "Where the repetitive work accumulates.",
       description:
         "Connect your tools, organize information, and reduce the manual steps between everyday tasks.",
       problem:
@@ -475,6 +491,8 @@ export const services = {
       slug: "custom-software",
       name: "Custom software",
       heading: "Software designed around your business.",
+      metaTitle: "Custom software built around your business",
+      problemHeading: "When your tools stop fitting how you work.",
       description:
         "Applications built around specific operational needs, from booking systems to internal business platforms.",
       problem:
@@ -518,6 +536,8 @@ export const services = {
       slug: "web-development",
       name: "Desarrollo web",
       heading: "Sitios web diseñados para destacar.",
+      metaTitle: "Desarrollo web para empresas",
+      problemHeading: "Cuando tu sitio estorba en vez de ayudar.",
       description:
         "Sitios web modernos, rápidos y adaptables que le dan a tu negocio una presencia digital clara.",
       problem:
@@ -562,6 +582,8 @@ export const services = {
       slug: "business-automation",
       name: "Automatización de negocios",
       heading: "Menos tareas repetitivas. Más tiempo para tu negocio.",
+      metaTitle: "Automatización de procesos para negocios",
+      problemHeading: "Dónde se acumula el trabajo repetitivo.",
       description:
         "Conecta tus herramientas, organiza la información y reduce los pasos manuales entre las tareas diarias.",
       problem:
@@ -603,6 +625,8 @@ export const services = {
       slug: "custom-software",
       name: "Software a medida",
       heading: "Software diseñado para tu negocio.",
+      metaTitle: "Software a medida para empresas",
+      problemHeading: "Cuando las herramientas dejan de ajustarse.",
       description:
         "Aplicaciones para necesidades operativas concretas, desde sistemas de reservas hasta plataformas internas.",
       problem:

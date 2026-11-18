@@ -287,6 +287,82 @@ test("every sitemap entry declares an x-default alternate", () => {
   }
 });
 
+const decode = (text) =>
+  text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+test("titles are descriptive, branded and fit the search result", () => {
+  for (const { route, html } of indexable()) {
+    const title = decode(attr(html, /<title>([^<]*)<\/title>/));
+    assert.ok(title, `${route}: empty title`);
+    // Google truncates around 60 characters, so anything longer is wasted.
+    assert.ok(
+      title.length <= 60,
+      `${route}: title is ${title.length} chars - "${title}"`,
+    );
+    // The brand leads on the home page and trails elsewhere; either is fine,
+    // but it must be present and must not be the whole title.
+    assert.ok(
+      title.includes("Vaul Software"),
+      `${route}: title is not branded - "${title}"`,
+    );
+    assert.ok(
+      title.replace("Vaul Software", "").replace(/[|\s]/g, "").length >= 8,
+      `${route}: title has no descriptive part - "${title}"`,
+    );
+  }
+});
+
+test("no two pages in a locale share a title or description", () => {
+  for (const locale of ["en/", "es/"]) {
+    const seen = new Map();
+    for (const { route, html } of indexable().filter((p) =>
+      p.route.startsWith(locale),
+    )) {
+      const title = decode(attr(html, /<title>([^<]*)<\/title>/));
+      assert.ok(!seen.has(title), `${route} duplicates the title of ${seen.get(title)}`);
+      seen.set(title, route);
+    }
+  }
+});
+
+test("meta descriptions are present and usefully long", () => {
+  for (const { route, html } of indexable()) {
+    const description = decode(
+      attr(html, /name="description" content="([^"]*)"/),
+    );
+    assert.ok(description, `${route}: no meta description`);
+    assert.ok(
+      description.length >= 50,
+      `${route}: description is only ${description.length} chars`,
+    );
+  }
+});
+
+test("each case study links to the service it exercised", () => {
+  const studies = indexable().filter((p) => /\/work\/[a-z-]+\//.test(p.url));
+  assert.equal(studies.length, 4, "expected two case studies per locale");
+  for (const { route, html } of studies) {
+    const locale = route.startsWith("es/") ? "es" : "en";
+    const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+    const links = all(main, /href="(\/(?:en|es)\/services\/[a-z-]+\/)"/g);
+    assert.ok(
+      links.length > 0,
+      `${route}: case study does not link to any service`,
+    );
+    for (const link of links) {
+      assert.ok(
+        link.startsWith(`/${locale}/`),
+        `${route}: links to the wrong locale (${link})`,
+      );
+    }
+  }
+});
+
 test("robots.txt allows crawling and points at the sitemap index", async () => {
   const robots = await readFile(join(DIST, "robots.txt"), "utf8");
   assert.match(robots, /User-agent: \*/);
